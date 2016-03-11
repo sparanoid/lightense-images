@@ -1,6 +1,6 @@
 # Lightense Images
 
-A dependency-free pure JavaScript image lightbox library less than 2 KB (not gzipped!). Inspired by [tholman/intense-images](https://github.com/tholman/intense-images). You can play with the code [live on CodePen](http://codepen.io/tholman/pen/mlDiK).
+A dependency-free pure JavaScript image lightbox library less than 2 KB (not gzipped!). Inspired by [tholman/intense-images](https://github.com/tholman/intense-images). You can play with the code [live on CodePen](http://codepen.io/sparanoid/pen/yOJyjV).
 
 This library is mainly used by [Almace Scaffolding](https://github.com/sparanoid/almace-scaffolding).
 
