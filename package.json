@@ -1,0 +1,30 @@
+{
+  "name": "lightense-images",
+  "version": "1.0.0",
+  "description": "A dependency-free pure JavaScript image lightbox library less than 2 KB (not gzipped!)",
+  "main": "lightense.js",
+  "scripts": {
+    "test": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sparanoid/lightense-images.git"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": "Tunghsiao Liu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sparanoid/lightense-images/issues"
+  },
+  "homepage": "https://github.com/sparanoid/lightense-images#readme",
+  "devDependencies": {
+    "babel-plugin-transform-es2015-template-literals": "^6.6.5",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-header": "^1.7.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.3"
+  }
+}
