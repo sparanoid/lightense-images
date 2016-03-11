@@ -7,7 +7,7 @@ const pkg = require('./package.json');
 
 const src = 'lightense.es6';
 const dest = './';
-const banner = '/*! <%= pkg.name %> v<%= pkg.version %> | (c) <%= pkg.author %> | <%= pkg.license %> */\n';
+const banner = '/*! <%= pkg.name %> v<%= pkg.version %> | © <%= pkg.author %> | <%= pkg.license %> */\n';
 
 gulp.task('default', () =>
   gulp.src(src)
