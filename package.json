@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/sparanoid/lightense-images/issues"
   },
-  "homepage": "https://github.com/sparanoid/lightense-images#readme",
+  "homepage": "http://sparanoid.com/work/lightense-images/",
   "devDependencies": {
     "babel-plugin-transform-es2015-template-literals": "^6.6.5",
     "gulp": "^3.9.1",
