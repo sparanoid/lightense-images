@@ -121,6 +121,13 @@ var Lightense = (function() {
 
   function init (element) {
     var imageSource = element.getAttribute('data-image') || element.src;
+
+    // If Command (OS X) or Ctrl (Windows) key pressed, stop processing and
+    // open the image in new tab
+    if (event.metaKey || event.ctrlKey) {
+      return window.open(imageSource, '_blank');
+    }
+
     var background = element.getAttribute('data-background') || false;
     var img = new Image();
     img.onload = function () {
