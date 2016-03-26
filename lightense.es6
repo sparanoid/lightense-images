@@ -7,8 +7,9 @@ var Lightense = (function () {
 
   // global config object
   var config = {
-    time: 200,
+    time: 300,
     padding: 40,
+    cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
     zIndex: 2147483647
   };
 
@@ -75,7 +76,7 @@ var Lightense = (function () {
 
       .lightense-wrap {
         position: relative;
-        transition: transform ${config.time}ms ease;
+        transition: transform ${config.time}ms ${config.cubicBezier};
         z-index: ${config.zIndex};
         -webkit-user-select: none;
         user-select: none;
@@ -83,7 +84,7 @@ var Lightense = (function () {
 
       .lightense-target {
         cursor: zoom-in;
-        transition: transform ${config.time}ms ease;
+        transition: transform ${config.time}ms ${config.cubicBezier};
       }
 
       .lightense-open {
