@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/sparanoid/lightense-images.svg?branch=master)](https://travis-ci.org/sparanoid/lightense-images)
 [![devDependency Status](https://david-dm.org/sparanoid/lightense-images/dev-status.svg?theme=shields.io)](https://david-dm.org/sparanoid/lightense-images#info=devDependencies)
 
-A dependency-free pure JavaScript image lightbox library less than 2 KB (not gzipped!). Inspired by [tholman/intense-images](https://github.com/tholman/intense-images). You can play with the code [live on CodePen](http://codepen.io/sparanoid/pen/yOJyjV).
+A dependency-free pure JavaScript image zooming library less than 2 KB (gzipped). Inspired by [tholman/intense-images](https://github.com/tholman/intense-images). You can play with the code [live on CodePen](http://codepen.io/sparanoid/pen/yOJyjV).
 
 This library is mainly used by [Almace Scaffolding](https://github.com/sparanoid/almace-scaffolding).
 
