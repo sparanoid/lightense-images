@@ -273,3 +273,5 @@ var Lightense = (function () {
 
   return main;
 })();
+
+module.exports = Lightense;
