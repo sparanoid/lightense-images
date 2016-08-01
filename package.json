@@ -25,6 +25,6 @@
     "gulp-babel": "^6.1.2",
     "gulp-header": "^1.7.1",
     "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^1.5.3"
+    "gulp-uglify": "^2.0.0"
   }
 }
