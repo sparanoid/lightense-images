@@ -138,7 +138,6 @@ var Lightense = (function () {
     }
 
     // calc animation
-    var translateX, translateY;
     var viewportX = (viewportWidth / 2);
     var viewportY = scrollTop + (viewportHeight / 2);
     var imageCenterX = targetImage.left + scrollLeft + (targetImage.width / 2);
