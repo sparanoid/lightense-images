@@ -11,7 +11,10 @@
     "url": "git+https://github.com/sparanoid/lightense-images.git"
   },
   "keywords": [
-    "javascript"
+    "css",
+    "image",
+    "javascript",
+    "webpack"
   ],
   "author": "Tunghsiao Liu",
   "license": "MIT",
