@@ -1,229 +1,295 @@
-var Lightense = function () {
-  'use strict';
+/*! lightense-images v1.0.0 | © Tunghsiao Liu | MIT */
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["Lightense"] = factory();
+	else
+		root["Lightense"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
 
-  // save some bytes
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
 
-  var w = window,
-      d = document;
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
 
-  // global config object
-  var config = {
-    time: 300,
-    padding: 40,
-    cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
-    zIndex: 2147483647
-  };
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
 
-  function startTracking(passedElements) {
-    // if passed an array of elements, assign tracking to all
-    var len = passedElements.length;
-    if (len) {
-      // loop and assign
-      for (var i = 0; i < len; i++) {
-        track(passedElements[i]);
-      }
-    } else {
-      track(passedElements);
-    }
-  }
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 
-  function track(element) {
-    var imageSource = element.getAttribute('data-image') || element.src;
-    if (imageSource) {
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
 
-      element.classList.add('lightense-target');
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
 
-      element.addEventListener('click', function (event) {
 
-        // if Command (OS X) or Ctrl (Windows) key pressed, stop processing and
-        // open the image in new tab
-        if (event.metaKey || event.ctrlKey) {
-          return w.open(imageSource, '_blank');
-        }
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
 
-        // init instance
-        init(this);
-      }, false);
-    }
-  }
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
 
-  function createStyle() {
-    var css = '\n      .lightense-backdrop {\n        box-sizing: border-box;\n        width: 100%;\n        height: 100%;\n        position: fixed;\n        top: 0;\n        left: 0;\n        overflow: hidden;\n        z-index: ' + (config.zIndex - 1) + ';\n        padding: 0;\n        margin: 0;\n        transition: opacity ' + config.time + 'ms ease;\n        cursor: zoom-out;\n        opacity: 0;\n        background-color: rgba(255, 255, 255, .98);\n        visibility: hidden;\n      }\n\n      @supports (-webkit-backdrop-filter: blur(30px)) {\n        .lightense-backdrop {\n          background-color: rgba(255, 255, 255, .6);\n          -webkit-backdrop-filter: blur(30px);\n          backdrop-filter: blur(30px);\n        }\n      }\n\n      .lightense-wrap {\n        position: relative;\n        transition: transform ' + config.time + 'ms ' + config.cubicBezier + ';\n        z-index: ' + config.zIndex + ';\n        -webkit-user-select: none;\n        user-select: none;\n      }\n\n      .lightense-target {\n        cursor: zoom-in;\n        transition: transform ' + config.time + 'ms ' + config.cubicBezier + ';\n      }\n\n      .lightense-open {\n        cursor: zoom-out;\n      }\n\n      .lightense-transitioning {\n        pointer-events: none;\n      }\n    ';
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
 
-    var head = d.head || d.getElementsByTagName('head')[0];
-    var style = d.createElement('style');
-    if (style.styleSheet) {
-      style.styleSheet.cssText = css;
-    } else {
-      style.appendChild(d.createTextNode(css));
-    }
-    head.appendChild(style);
-  }
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports) {
 
-  function createBackdrop() {
-    config.container = d.createElement('div');
-    config.container.className = 'lightense-backdrop';
-    d.body.appendChild(config.container);
-  }
+	'use strict';
 
-  function createTransform(img) {
-    // get original image size
-    var naturalWidth = img.width;
-    var naturalHeight = img.height;
+	var Lightense = function () {
+	  'use strict';
 
-    // calc zoom ratio
-    var scrollTop = w.pageYOffset || d.documentElement.scrollTop || 0;
-    var scrollLeft = w.pageXOffset || d.documentElement.scrollLeft || 0;
-    var targetImage = config.target.getBoundingClientRect();
-    var maxScaleFactor = naturalWidth / targetImage.width;
-    var viewportWidth = w.innerWidth || d.documentElement.clientWidth || 0;
-    var viewportHeight = w.innerHeight || d.documentElement.clientHeight || 0;
-    var viewportWidthOffset = viewportWidth - config.padding;
-    var viewportHeightOffset = viewportHeight - config.padding;
-    var imageRatio = naturalWidth / naturalHeight;
-    var viewportRatio = viewportWidthOffset / viewportHeightOffset;
+	  // save some bytes
 
-    if (naturalWidth < viewportWidthOffset && naturalHeight < viewportHeightOffset) {
-      config.scaleFactor = maxScaleFactor;
-    } else if (imageRatio < viewportRatio) {
-      config.scaleFactor = viewportHeightOffset / naturalHeight * maxScaleFactor;
-    } else {
-      config.scaleFactor = viewportWidthOffset / naturalWidth * maxScaleFactor;
-    }
+	  var w = window,
+	      d = document;
 
-    // calc animation
-    var translateX, translateY;
-    var viewportX = viewportWidth / 2;
-    var viewportY = scrollTop + viewportHeight / 2;
-    var imageCenterX = targetImage.left + scrollLeft + targetImage.width / 2;
-    var imageCenterY = targetImage.top + scrollTop + targetImage.height / 2;
+	  // global config object
+	  var config = {
+	    time: 300,
+	    padding: 40,
+	    cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
+	    zIndex: 2147483647
+	  };
 
-    config.translateX = viewportX - imageCenterX;
-    config.translateY = viewportY - imageCenterY;
-  }
+	  function startTracking(passedElements) {
+	    // if passed an array of elements, assign tracking to all
+	    var len = passedElements.length;
+	    if (len) {
+	      // loop and assign
+	      for (var i = 0; i < len; i++) {
+	        track(passedElements[i]);
+	      }
+	    } else {
+	      track(passedElements);
+	    }
+	  }
 
-  function createViewer() {
-    config.target.classList.add('lightense-open');
+	  function track(element) {
+	    var imageSource = element.getAttribute('data-image') || element.src;
+	    if (imageSource) {
 
-    // create wrapper element
-    config.wrap = d.createElement('div');
-    config.wrap.className = 'lightense-wrap';
+	      element.classList.add('lightense-target');
 
-    // apply zoom ratio to target image
-    setTimeout(function () {
-      config.target.style.transform = 'scale(' + config.scaleFactor + ')';
-    });
+	      element.addEventListener('click', function (event) {
 
-    // apply animation to outer wrapper
-    config.target.parentNode.insertBefore(config.wrap, config.target);
-    config.wrap.appendChild(config.target);
-    setTimeout(function () {
-      config.wrap.style.transform = 'translate3d(' + config.translateX + 'px, ' + config.translateY + 'px, 0)';
-    });
+	        // if Command (OS X) or Ctrl (Windows) key pressed, stop processing and
+	        // open the image in new tab
+	        if (event.metaKey || event.ctrlKey) {
+	          return w.open(imageSource, '_blank');
+	        }
 
-    // show backdrop
-    if (config.background) config.container.style.backgroundColor = config.background;
-    config.container.style.visibility = 'visible';
-    setTimeout(function () {
-      config.container.style.opacity = '1';
-    });
-  }
+	        // init instance
+	        init(this);
+	      }, false);
+	    }
+	  }
 
-  function removeViewer() {
-    unbindEvents();
+	  function createStyle() {
+	    var css = '\n      .lightense-backdrop {\n        box-sizing: border-box;\n        width: 100%;\n        height: 100%;\n        position: fixed;\n        top: 0;\n        left: 0;\n        overflow: hidden;\n        z-index: ' + (config.zIndex - 1) + ';\n        padding: 0;\n        margin: 0;\n        transition: opacity ' + config.time + 'ms ease;\n        cursor: zoom-out;\n        opacity: 0;\n        background-color: rgba(255, 255, 255, .98);\n        visibility: hidden;\n      }\n\n      @supports (-webkit-backdrop-filter: blur(30px)) {\n        .lightense-backdrop {\n          background-color: rgba(255, 255, 255, .6);\n          -webkit-backdrop-filter: blur(30px);\n          backdrop-filter: blur(30px);\n        }\n      }\n\n      .lightense-wrap {\n        position: relative;\n        transition: transform ' + config.time + 'ms ' + config.cubicBezier + ';\n        z-index: ' + config.zIndex + ';\n        -webkit-user-select: none;\n        user-select: none;\n      }\n\n      .lightense-target {\n        cursor: zoom-in;\n        transition: transform ' + config.time + 'ms ' + config.cubicBezier + ';\n      }\n\n      .lightense-open {\n        cursor: zoom-out;\n      }\n\n      .lightense-transitioning {\n        pointer-events: none;\n      }\n    ';
 
-    config.target.classList.remove('lightense-open');
+	    var head = d.head || d.getElementsByTagName('head')[0];
+	    var style = d.createElement('style');
+	    if (style.styleSheet) {
+	      style.styleSheet.cssText = css;
+	    } else {
+	      style.appendChild(d.createTextNode(css));
+	    }
+	    head.appendChild(style);
+	  }
 
-    // remove transform styles
-    config.wrap.style.transform = '';
-    config.target.style.transform = '';
-    config.target.classList.add('lightense-transitioning');
+	  function createBackdrop() {
+	    config.container = d.createElement('div');
+	    config.container.className = 'lightense-backdrop';
+	    d.body.appendChild(config.container);
+	  }
 
-    // fadeout backdrop
-    config.container.style.opacity = '';
+	  function createTransform(img) {
+	    // get original image size
+	    var naturalWidth = img.width;
+	    var naturalHeight = img.height;
 
-    // hide backdrop and remove target element wrapper
-    setTimeout(function () {
-      config.container.style.visibility = '';
-      config.container.style.backgroundColor = '';
-      config.wrap.parentNode.replaceChild(config.target, config.wrap);
-      config.target.classList.remove('lightense-transitioning');
-    }, config.time);
-  }
+	    // calc zoom ratio
+	    var scrollTop = w.pageYOffset || d.documentElement.scrollTop || 0;
+	    var scrollLeft = w.pageXOffset || d.documentElement.scrollLeft || 0;
+	    var targetImage = config.target.getBoundingClientRect();
+	    var maxScaleFactor = naturalWidth / targetImage.width;
+	    var viewportWidth = w.innerWidth || d.documentElement.clientWidth || 0;
+	    var viewportHeight = w.innerHeight || d.documentElement.clientHeight || 0;
+	    var viewportWidthOffset = viewportWidth - config.padding;
+	    var viewportHeightOffset = viewportHeight - config.padding;
+	    var imageRatio = naturalWidth / naturalHeight;
+	    var viewportRatio = viewportWidthOffset / viewportHeightOffset;
 
-  function checkViewer() {
-    var scrollOffset = Math.abs(config.scrollY - w.scrollY);
-    if (scrollOffset >= 30) {
-      removeViewer();
-    }
-  }
+	    if (naturalWidth < viewportWidthOffset && naturalHeight < viewportHeightOffset) {
+	      config.scaleFactor = maxScaleFactor;
+	    } else if (imageRatio < viewportRatio) {
+	      config.scaleFactor = viewportHeightOffset / naturalHeight * maxScaleFactor;
+	    } else {
+	      config.scaleFactor = viewportWidthOffset / naturalWidth * maxScaleFactor;
+	    }
 
-  function init(element) {
-    config.target = element;
+	    // calc animation
+	    var translateX, translateY;
+	    var viewportX = viewportWidth / 2;
+	    var viewportY = scrollTop + viewportHeight / 2;
+	    var imageCenterX = targetImage.left + scrollLeft + targetImage.width / 2;
+	    var imageCenterY = targetImage.top + scrollTop + targetImage.height / 2;
 
-    // TODO: need refine
-    // if element already openned, close it
-    if (config.target.classList.contains('lightense-open')) {
-      return removeViewer();
-    }
+	    config.translateX = viewportX - imageCenterX;
+	    config.translateY = viewportY - imageCenterY;
+	  }
 
-    // save current window scroll position for later use
-    config.scrollY = w.scrollY;
+	  function createViewer() {
+	    config.target.classList.add('lightense-open');
 
-    // save target attributes
-    config.src = element.getAttribute('data-image') || element.src;
-    config.background = config.target.getAttribute('data-background') || false;
+	    // create wrapper element
+	    config.wrap = d.createElement('div');
+	    config.wrap.className = 'lightense-wrap';
 
-    var img = new Image();
-    img.onload = function () {
-      createTransform(this);
-      createViewer();
-      bindEvents();
-    };
-    img.src = config.src;
-  }
+	    // apply zoom ratio to target image
+	    setTimeout(function () {
+	      config.target.style.transform = 'scale(' + config.scaleFactor + ')';
+	    });
 
-  function bindEvents() {
-    w.addEventListener('keyup', onKeyUp, false);
-    w.addEventListener('scroll', checkViewer, false);
-    config.container.addEventListener('click', removeViewer, false);
-  }
+	    // apply animation to outer wrapper
+	    config.target.parentNode.insertBefore(config.wrap, config.target);
+	    config.wrap.appendChild(config.target);
+	    setTimeout(function () {
+	      config.wrap.style.transform = 'translate3d(' + config.translateX + 'px, ' + config.translateY + 'px, 0)';
+	    });
 
-  function unbindEvents() {
-    w.removeEventListener('keyup', onKeyUp, false);
-    w.removeEventListener('scroll', checkViewer, false);
-    config.container.removeEventListener('click', removeViewer, false);
-  }
+	    // show backdrop
+	    if (config.background) config.container.style.backgroundColor = config.background;
+	    config.container.style.visibility = 'visible';
+	    setTimeout(function () {
+	      config.container.style.opacity = '1';
+	    });
+	  }
 
-  // exit on excape (esc) key pressed
-  function onKeyUp(event) {
-    event.preventDefault();
-    if (event.keyCode === 27) {
-      removeViewer();
-    }
-  }
+	  function removeViewer() {
+	    unbindEvents();
 
-  function main(elements, cfg) {
-    // parse arguments
-    if (!elements) {
-      throw 'You need to pass an element!';
-    }
+	    config.target.classList.remove('lightense-open');
 
-    // get user configs
-    var userConfig = cfg || {};
-    if (userConfig.time) {
-      config.time = userConfig.time;
-    }
+	    // remove transform styles
+	    config.wrap.style.transform = '';
+	    config.target.style.transform = '';
+	    config.target.classList.add('lightense-transitioning');
 
-    // prepare stylesheets
-    createStyle();
+	    // fadeout backdrop
+	    config.container.style.opacity = '';
 
-    // prepare backdrop element
-    createBackdrop();
+	    // hide backdrop and remove target element wrapper
+	    setTimeout(function () {
+	      config.container.style.visibility = '';
+	      config.container.style.backgroundColor = '';
+	      config.wrap.parentNode.replaceChild(config.target, config.wrap);
+	      config.target.classList.remove('lightense-transitioning');
+	    }, config.time);
+	  }
 
-    // pass and prepare elements
-    startTracking(elements);
-  }
+	  function checkViewer() {
+	    var scrollOffset = Math.abs(config.scrollY - w.scrollY);
+	    if (scrollOffset >= 30) {
+	      removeViewer();
+	    }
+	  }
 
-  return main;
-}();
+	  function init(element) {
+	    config.target = element;
+
+	    // TODO: need refine
+	    // if element already openned, close it
+	    if (config.target.classList.contains('lightense-open')) {
+	      return removeViewer();
+	    }
+
+	    // save current window scroll position for later use
+	    config.scrollY = w.scrollY;
+
+	    // save target attributes
+	    config.src = element.getAttribute('data-image') || element.src;
+	    config.background = config.target.getAttribute('data-background') || false;
+
+	    var img = new Image();
+	    img.onload = function () {
+	      createTransform(this);
+	      createViewer();
+	      bindEvents();
+	    };
+	    img.src = config.src;
+	  }
+
+	  function bindEvents() {
+	    w.addEventListener('keyup', onKeyUp, false);
+	    w.addEventListener('scroll', checkViewer, false);
+	    config.container.addEventListener('click', removeViewer, false);
+	  }
+
+	  function unbindEvents() {
+	    w.removeEventListener('keyup', onKeyUp, false);
+	    w.removeEventListener('scroll', checkViewer, false);
+	    config.container.removeEventListener('click', removeViewer, false);
+	  }
+
+	  // exit on excape (esc) key pressed
+	  function onKeyUp(event) {
+	    event.preventDefault();
+	    if (event.keyCode === 27) {
+	      removeViewer();
+	    }
+	  }
+
+	  function main(elements, cfg) {
+	    // parse arguments
+	    if (!elements) {
+	      throw 'You need to pass an element!';
+	    }
+
+	    // get user configs
+	    var userConfig = cfg || {};
+	    if (userConfig.time) {
+	      config.time = userConfig.time;
+	    }
+
+	    // prepare stylesheets
+	    createStyle();
+
+	    // prepare backdrop element
+	    createBackdrop();
+
+	    // pass and prepare elements
+	    startTracking(elements);
+	  }
+
+	  return main;
+	}();
+
+	module.exports = Lightense;
+
+/***/ }
+/******/ ])
+});
+;
