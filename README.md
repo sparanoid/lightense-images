@@ -11,16 +11,55 @@ This library is mainly used by [Almace Scaffolding](https://github.com/sparanoid
 
 ## [Getting Started](http://sparanoid.com/work/lightense-images/)
 
+## Features
+
+- High performance
+- One script, no additional dependencies, no bloated styles
+- Safari `backdrop-filter` support
+- 2 KB gzipped
+
+## Install
+
+- `npm install lightense-images --save`
+- Or download library and save it to your project
+- Or host it on a CDN and reference it via `<script></script>` tag
+
+The Lightense library is wrapped in Universal Module Syntax (UMD), this means that out of the box, you can include it into your web application via `<script></script>` tag, `import`, or `require('lightense-images')`.
+
+## Setup
+
+```html
+<img src="photo.jpg">
+<script src="lightense.js"></script>
+<script>
+  window.addEventListener('load', function () {
+    var el = document.querySelectorAll('img');
+    Lightense(el);
+  }, false);
+</script>
+```
+
+### Custom Background Color
+
+```html
+<img src="screenshot.png" data-background="rgba(0, 0, 0, .96)">
+```
+
+### Disable Lightense for Specific Elements
+
+```html
+<img src="photo.jpg" class="no-lightense">
+<script>
+  window.addEventListener('load', function () {
+    var el = document.querySelectorAll('img:not(.no-lightense)');
+    Lightense(el);
+  }, false);
+</script>
+```
+
 ## Browser Support
 
 All modern browsers, it "should work" in Internet Explorer 10 and up as well.
-
-## Install
-Download library and save it to your project. Or host it on a CDN and reference it via `<script></script>` tag.
-
-## Use
-The Lightense library is wrapped in Universal Module Syntax (UMD), this means that out of the box, you can include it into your web application via `<script></script>` tag, `import`, or `require('lightense-images')`.
-
 
 ## Donate
 
