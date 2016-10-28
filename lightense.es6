@@ -161,21 +161,21 @@ var Lightense = (function () {
     // apply zoom ratio to target image
     setTimeout(function () {
       config.target.style.transform = 'scale(' + config.scaleFactor + ')';
-    });
+    }, 20);
 
     // apply animation to outer wrapper
     config.target.parentNode.insertBefore(config.wrap, config.target);
     config.wrap.appendChild(config.target);
     setTimeout(function () {
       config.wrap.style.transform = 'translate3d(' + config.translateX + 'px, ' + config.translateY + 'px, 0)';
-    });
+    }, 20);
 
     // show backdrop
     if (config.background) config.container.style.backgroundColor = config.background;
     config.container.style.visibility = 'visible';
     setTimeout(function () {
       config.container.style.opacity = '1';
-    });
+    }, 20);
   }
 
   function removeViewer () {
