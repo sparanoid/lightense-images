@@ -72,6 +72,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    time: 300,
 	    padding: 40,
 	    offset: 40,
+	    keyboard: true,
 	    cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
 	    zIndex: 2147483647
 	  };
@@ -95,15 +96,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function track(element) {
 	    var imageSource = element.getAttribute('data-image') || element.src;
 	    if (imageSource) {
-
 	      element.classList.add('lightense-target');
-
 	      element.addEventListener('click', function (event) {
-
-	        // if Command (OS X) or Ctrl (Windows) key pressed, stop processing and
-	        // open the image in new tab
-	        if (event.metaKey || event.ctrlKey) {
-	          return w.open(imageSource, '_blank');
+	        if (config.keyboard) {
+	          // if Command (macOS) or Ctrl (Windows) key pressed, stop processing
+	          // and open the image in a new tab
+	          if (event.metaKey || event.ctrlKey) {
+	            return w.open(imageSource, '_blank');
+	          }
 	        }
 
 	        // init instance
