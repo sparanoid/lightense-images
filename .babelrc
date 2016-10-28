@@ -1,6 +1,7 @@
 {
   "plugins": [
-    "transform-es2015-template-literals"
+    "transform-es2015-template-literals",
+    "transform-object-assign"
   ],
   "presets": ["es2015"]
 }

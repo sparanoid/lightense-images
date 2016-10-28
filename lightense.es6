@@ -5,14 +5,17 @@ var Lightense = (function () {
   var w = window,
       d = document;
 
-  // global config object
-  var config = {
+  // default options
+  var defaults = {
     time: 300,
     padding: 40,
-    offset: 60,
+    offset: 40,
     cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
     zIndex: 2147483647
   };
+
+  // init user options
+  var config = {};
 
   function startTracking (passedElements) {
     // if passed an array of elements, assign tracking to all
@@ -249,17 +252,14 @@ var Lightense = (function () {
     }
   }
 
-  function main (elements, cfg) {
+  function main (elements, options = {}) {
     // parse arguments
     if (!elements) {
       throw 'You need to pass an element!';
     }
 
-    // get user configs
-    var userConfig = cfg || {};
-    if (userConfig.time) {
-      config.time = userConfig.time;
-    }
+    // get user options
+    config = Object.assign({}, defaults, options);
 
     // prepare stylesheets
     createStyle();
