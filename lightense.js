@@ -57,6 +57,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var Lightense = function () {
 	  'use strict';
 
@@ -65,14 +67,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var w = window,
 	      d = document;
 
-	  // global config object
-	  var config = {
+	  // default options
+	  var defaults = {
 	    time: 300,
 	    padding: 40,
-	    offset: 60,
+	    offset: 40,
 	    cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
 	    zIndex: 2147483647
 	  };
+
+	  // init user options
+	  var config = {};
 
 	  function startTracking(passedElements) {
 	    // if passed an array of elements, assign tracking to all
@@ -262,17 +267,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
-	  function main(elements, cfg) {
+	  function main(elements) {
+	    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
 	    // parse arguments
 	    if (!elements) {
 	      throw 'You need to pass an element!';
 	    }
 
-	    // get user configs
-	    var userConfig = cfg || {};
-	    if (userConfig.time) {
-	      config.time = userConfig.time;
-	    }
+	    // get user options
+	    config = _extends({}, defaults, options);
 
 	    // prepare stylesheets
 	    createStyle();
