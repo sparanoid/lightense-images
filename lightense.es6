@@ -9,6 +9,7 @@ var Lightense = (function () {
   var config = {
     time: 300,
     padding: 40,
+    offset: 60,
     cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
     zIndex: 2147483647
   };
@@ -198,7 +199,7 @@ var Lightense = (function () {
 
   function checkViewer () {
     var scrollOffset = Math.abs(config.scrollY - w.scrollY);
-    if (scrollOffset >= 30) {
+    if (scrollOffset >= config.offset) {
       removeViewer();
     }
   }
