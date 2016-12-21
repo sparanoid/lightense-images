@@ -89,6 +89,8 @@ var Lightense = (function () {
         cursor: zoom-in;
         transition: transform ${config.time}ms ${config.cubicBezier};
         pointer-events: auto;
+        -webkit-user-select: none;
+        user-select: none;
       }
 
       .lightense-open {
