@@ -82,13 +82,13 @@ var Lightense = (function () {
         position: relative;
         transition: transform ${config.time}ms ${config.cubicBezier};
         z-index: ${config.zIndex};
-        -webkit-user-select: none;
-        user-select: none;
+        pointer-events: none;
       }
 
       .lightense-target {
         cursor: zoom-in;
         transition: transform ${config.time}ms ${config.cubicBezier};
+        pointer-events: auto;
       }
 
       .lightense-open {
