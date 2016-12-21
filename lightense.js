@@ -94,15 +94,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function track(element) {
-	    var imageSource = element.getAttribute('data-image') || element.src;
-	    if (imageSource) {
+	    if (element.src) {
 	      element.classList.add('lightense-target');
 	      element.addEventListener('click', function (event) {
 	        if (config.keyboard) {
 	          // if Command (macOS) or Ctrl (Windows) key pressed, stop processing
 	          // and open the image in a new tab
 	          if (event.metaKey || event.ctrlKey) {
-	            return w.open(imageSource, '_blank');
+	            return w.open(element.src, '_blank');
 	          }
 	        }
 
@@ -235,8 +234,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    config.scrollY = w.scrollY;
 
 	    // save target attributes
-	    config.src = element.getAttribute('data-image') || element.src;
 	    config.background = config.target.getAttribute('data-background') || false;
+	    config.padding = config.target.getAttribute('data-padding') || defaults.padding;
 
 	    var img = new Image();
 	    img.onload = function () {
@@ -244,7 +243,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      createViewer();
 	      bindEvents();
 	    };
-	    img.src = config.src;
+	    img.src = config.target.src;
 	  }
 
 	  function bindEvents() {
