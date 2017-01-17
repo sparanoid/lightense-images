@@ -66,8 +66,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // Save some bytes
 
-	  var w = window,
-	      d = document;
+	  var w = window;
+	  var d = document;
 
 	  // default options
 	  var defaults = {
@@ -287,10 +287,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function main(target) {
 	    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-	    // Parse arguments
+	    // Parse elements
 	    elements = getElements(target);
 
-	    // Get user options
+	    // Parse user options
 	    config = _extends({}, defaults, options);
 
 	    // Prepare stylesheets
