@@ -1,12 +1,12 @@
-var Lightense = (function () {
+const Lightense = () => {
   'use strict';
 
   // Save some bytes
-  var w = window,
-      d = document;
+  const w = window,
+        d = document;
 
   // default options
-  var defaults = {
+  const defaults = {
     time: 300,
     padding: 40,
     offset: 40,
@@ -17,6 +17,22 @@ var Lightense = (function () {
 
   // Init user options
   var config = {};
+
+  // Init target elements
+  var elements;
+
+  function getElements (elements) {
+    switch (typeof elements) {
+      case 'undefined':
+        throw 'You need to pass an element!';
+
+      case 'string':
+        return document.querySelectorAll(elements);
+
+      case 'object':
+        return elements;
+    }
+  }
 
   function startTracking (passedElements) {
     // If passed an array of elements, assign tracking to all
@@ -251,11 +267,9 @@ var Lightense = (function () {
     }
   }
 
-  function main (elements, options = {}) {
+  function main (target, options = {}) {
     // Parse arguments
-    if (!elements) {
-      throw 'You need to pass an element!';
-    }
+    elements = getElements(target);
 
     // Get user options
     config = Object.assign({}, defaults, options);
@@ -271,6 +285,8 @@ var Lightense = (function () {
   }
 
   return main;
-})();
+};
 
-module.exports = Lightense;
+const singleton = Lightense();
+
+module.exports = singleton;
