@@ -2,8 +2,8 @@ const Lightense = () => {
   'use strict';
 
   // Save some bytes
-  const w = window,
-        d = document;
+  const w = window;
+  const d = document;
 
   // default options
   const defaults = {
@@ -268,10 +268,10 @@ const Lightense = () => {
   }
 
   function main (target, options = {}) {
-    // Parse arguments
+    // Parse elements
     elements = getElements(target);
 
-    // Get user options
+    // Parse user options
     config = Object.assign({}, defaults, options);
 
     // Prepare stylesheets
