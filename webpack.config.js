@@ -15,14 +15,24 @@ module.exports = {
     library: 'Lightense'
   },
   module: {
-    preLoaders: [{test: /\.es6$/, exclude: /node_modules/, loader: "jshint"}],
-    loaders: [{test: /\.es6$/, exclude: /node_modules/, loader: "babel"}]
+    rules: [
+      {
+        test: /\.es6$/,
+        exclude: /node_modules/,
+        enforce: 'pre',
+        loader: 'babel-loader'
+      }
+    ]
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
       include: /\.min\.js$/,
       minimize: true
     }),
-    new webpack.BannerPlugin(banner, {raw: true, entryOnly: true})
+    new webpack.BannerPlugin({
+      banner: banner,
+      raw: true,
+      entryOnly: true
+    })
   ]
 };
