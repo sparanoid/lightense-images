@@ -67,53 +67,52 @@ const Lightense = () => {
 
   function createStyle () {
     var css = `
-      .lightense-backdrop {
-        box-sizing: border-box;
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        overflow: hidden;
-        z-index: ${config.zIndex - 1};
-        padding: 0;
-        margin: 0;
-        transition: opacity ${config.time}ms ease;
-        cursor: zoom-out;
-        opacity: 0;
-        background-color: rgba(255, 255, 255, .98);
-        visibility: hidden;
-      }
+.lightense-backdrop {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: ${config.zIndex - 1};
+  padding: 0;
+  margin: 0;
+  transition: opacity ${config.time}ms ease;
+  cursor: zoom-out;
+  opacity: 0;
+  background-color: rgba(255, 255, 255, .98);
+  visibility: hidden;
+}
 
-      @supports (-webkit-backdrop-filter: blur(30px)) {
-        .lightense-backdrop {
-          background-color: rgba(255, 255, 255, .6);
-          -webkit-backdrop-filter: blur(30px);
-          backdrop-filter: blur(30px);
-        }
-      }
+@supports (-webkit-backdrop-filter: blur(30px)) {
+  .lightense-backdrop {
+    background-color: rgba(255, 255, 255, .6);
+    -webkit-backdrop-filter: blur(30px);
+    backdrop-filter: blur(30px);
+  }
+}
 
-      .lightense-wrap {
-        position: relative;
-        transition: transform ${config.time}ms ${config.cubicBezier};
-        z-index: ${config.zIndex};
-        pointer-events: none;
-      }
+.lightense-wrap {
+  position: relative;
+  transition: transform ${config.time}ms ${config.cubicBezier};
+  z-index: ${config.zIndex};
+  pointer-events: none;
+}
 
-      .lightense-target {
-        cursor: zoom-in;
-        transition: transform ${config.time}ms ${config.cubicBezier};
-        pointer-events: auto;
-      }
+.lightense-target {
+  cursor: zoom-in;
+  transition: transform ${config.time}ms ${config.cubicBezier};
+  pointer-events: auto;
+}
 
-      .lightense-open {
-        cursor: zoom-out;
-      }
+.lightense-open {
+  cursor: zoom-out;
+}
 
-      .lightense-transitioning {
-        pointer-events: none;
-      }
-    `;
+.lightense-transitioning {
+  pointer-events: none;
+}`;
 
     var head = d.head || d.getElementsByTagName('head')[0];
     var style = d.createElement('style');
