@@ -1,4 +1,4 @@
-/*! lightense-images v1.0.3 | © Tunghsiao Liu | MIT */
+/*! lightense-images v1.0.4 | © Tunghsiao Liu | MIT */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
