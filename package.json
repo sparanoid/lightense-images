@@ -23,7 +23,7 @@
   },
   "homepage": "http://sparanoid.com/work/lightense-images/",
   "devDependencies": {
-    "babel-core": "^6.16.0",
+    "babel-core": "^6.24.1",
     "babel-loader": "^6.2.4",
     "babel-plugin-transform-es2015-template-literals": "^6.6.5",
     "babel-plugin-transform-object-assign": "^6.8.0",
