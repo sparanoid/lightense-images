@@ -1,5 +1,7 @@
 # Lightense Images
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/sparanoid/lightense-images.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/sparanoid/lightense-images.svg?branch=master)](https://travis-ci.org/sparanoid/lightense-images)
 [![devDependency Status](https://david-dm.org/sparanoid/lightense-images/dev-status.svg?theme=shields.io)](https://david-dm.org/sparanoid/lightense-images?type=dev)
 
