@@ -13,7 +13,6 @@ const Lightense = () => {
     keyboard: true,
     cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
     background: 'rgba(255, 255, 255, .98)',
-    backgroundSafari: 'rgba(255, 255, 255, .6)',
     zIndex: 2147483647
   };
 
@@ -67,6 +66,52 @@ const Lightense = () => {
     }
   }
 
+  function ifHex(input) {
+    return /^#([A-Fa-f0-9]{3}){1,2}$/.test(input);
+  }
+
+  // https://regex101.com/r/wHoiD0/1
+  function ifRgb(input) {
+    return /(rgb\((?:\d{1,3}[,\)] ?){3}(?:\d?\.\d+\))?)/.test(input);
+  }
+
+  function ifRgba(input) {
+    return /(rgba\((?:\d{1,3}[,\)] ?){3}(?:\d?\.\d+\))?)/.test(input);
+  }
+
+  // https://stackoverflow.com/a/21648508/412385
+  function hexToRgbA(input){
+    var color;
+    if (ifHex(input)) {
+      color = input.substring(1).split('');
+      if (color.length === 3) {
+        color = [color[0], color[0], color[1], color[1], color[2], color[2]];
+      }
+      color = '0x' + color.join('');
+      return 'rgba(' + [(color >> 16) & 255, (color >> 8) & 255, color & 255].join(', ') + ', 1)';
+    }
+
+    if (ifRgb(input)) {
+      return input.replace(')', ', 1)');
+    }
+
+    if (ifRgba(input)) {
+      return input;
+    }
+
+    // silent errors and return a general rgba color
+    console.log('Invalid color: ' + input);
+    return defaults.background;
+  }
+
+  function computeBackgroundSafari(color) {
+    var background = hexToRgbA(color);
+    var factor = 0.7;
+    var regex = /([\d\.]+)\)$/g;
+    var alpha = regex.exec(background)[1];
+    return background.replace(regex, alpha * factor + ')');
+  }
+
   function insertCss(styleId, styleContent) {
     var head = d.head || d.getElementsByTagName('head')[0];
 
@@ -110,7 +155,7 @@ const Lightense = () => {
 
 @supports (-webkit-backdrop-filter: blur(30px)) {
   .lightense-backdrop {
-    background-color: ${config.backgroundSafari};
+    background-color: ${computeBackgroundSafari(config.background)};
     -webkit-backdrop-filter: blur(30px);
     backdrop-filter: blur(30px);
   }
@@ -204,7 +249,6 @@ const Lightense = () => {
     var item_options = {
       cubicBezier: config.target.getAttribute('data-lightense-cubic-bezier') || config.cubicBezier,
       background: config.target.getAttribute('data-lightense-background') || config.target.getAttribute('data-background') || config.background,
-      backgroundSafari: config.target.getAttribute('data-lightense-background-safari') || config.backgroundSafari,
       zIndex: config.target.getAttribute('data-lightense-z-index') || config.zIndex
     };
 
@@ -220,7 +264,7 @@ const Lightense = () => {
 
     @supports (-webkit-backdrop-filter: blur(30px)) {
       .lightense-backdrop {
-        background-color: ${config_computed.backgroundSafari};
+        background-color: ${computeBackgroundSafari(config_computed.background)};
       }
     }
 
