@@ -23,7 +23,7 @@ const Lightense = () => {
   // Init target elements
   var elements;
 
-  function getElements (elements) {
+  function getElements(elements) {
     switch (typeof elements) {
       case 'undefined':
         throw 'You need to pass an element!';
@@ -36,7 +36,7 @@ const Lightense = () => {
     }
   }
 
-  function startTracking (passedElements) {
+  function startTracking(passedElements) {
     // If passed an array of elements, assign tracking to all
     var len = passedElements.length;
     if (len) {
@@ -49,10 +49,10 @@ const Lightense = () => {
     }
   }
 
-  function track (element) {
+  function track(element) {
     if (element.src) {
       element.classList.add('lightense-target');
-      element.addEventListener('click', function (event) {
+      element.addEventListener('click', function(event) {
         if (config.keyboard) {
           // If Command (macOS) or Ctrl (Windows) key pressed, stop processing
           // and open the image in a new tab
@@ -88,7 +88,7 @@ const Lightense = () => {
     head.appendChild(styleEl);
   }
 
-  function createDefaultCss () {
+  function createDefaultCss() {
     var css = `
 .lightense-backdrop {
   box-sizing: border-box;
@@ -139,13 +139,13 @@ const Lightense = () => {
     insertCss('lightense-images-css', css);
   }
 
-  function createBackdrop () {
+  function createBackdrop() {
     config.container = d.createElement('div');
     config.container.className = 'lightense-backdrop';
     d.body.appendChild(config.container);
   }
 
-  function createTransform (img) {
+  function createTransform(img) {
     // Get original image size
     var naturalWidth = img.width;
     var naturalHeight = img.height;
@@ -181,7 +181,7 @@ const Lightense = () => {
     config.translateY = viewportY - imageCenterY;
   }
 
-  function createViewer () {
+  function createViewer() {
     config.target.classList.add('lightense-open');
 
     // Create wrapper element
@@ -189,14 +189,14 @@ const Lightense = () => {
     config.wrap.className = 'lightense-wrap';
 
     // Apply zoom ratio to target image
-    setTimeout(function () {
+    setTimeout(function() {
       config.target.style.transform = 'scale(' + config.scaleFactor + ')';
     }, 20);
 
     // Apply animation to outer wrapper
     config.target.parentNode.insertBefore(config.wrap, config.target);
     config.wrap.appendChild(config.target);
-    setTimeout(function () {
+    setTimeout(function() {
       config.wrap.style.transform = 'translate3d(' + config.translateX + 'px, ' + config.translateY + 'px, 0)';
     }, 20);
 
@@ -235,12 +235,12 @@ const Lightense = () => {
     insertCss('lightense-images-css-computed', css);
 
     config.container.style.visibility = 'visible';
-    setTimeout(function () {
+    setTimeout(function() {
       config.container.style.opacity = '1';
     }, 20);
   }
 
-  function removeViewer () {
+  function removeViewer() {
     unbindEvents();
 
     config.target.classList.remove('lightense-open');
@@ -254,7 +254,7 @@ const Lightense = () => {
     config.container.style.opacity = '';
 
     // Hide backdrop and remove target element wrapper
-    setTimeout(function () {
+    setTimeout(function() {
       config.container.style.visibility = '';
       config.container.style.backgroundColor = '';
       config.wrap.parentNode.replaceChild(config.target, config.wrap);
@@ -262,14 +262,14 @@ const Lightense = () => {
     }, config.time);
   }
 
-  function checkViewer () {
+  function checkViewer() {
     var scrollOffset = Math.abs(config.scrollY - w.scrollY);
     if (scrollOffset >= config.offset) {
       removeViewer();
     }
   }
 
-  function init (element) {
+  function init(element) {
     config.target = element;
 
     // TODO: need refine
@@ -282,7 +282,7 @@ const Lightense = () => {
     config.scrollY = w.scrollY;
 
     var img = new Image();
-    img.onload = function () {
+    img.onload = function() {
       createTransform(this);
       createViewer();
       bindEvents();
@@ -290,27 +290,27 @@ const Lightense = () => {
     img.src = config.target.src;
   }
 
-  function bindEvents () {
+  function bindEvents() {
     w.addEventListener('keyup', onKeyUp, false);
     w.addEventListener('scroll', checkViewer, false);
     config.container.addEventListener('click', removeViewer, false);
   }
 
-  function unbindEvents () {
+  function unbindEvents() {
     w.removeEventListener('keyup', onKeyUp, false);
     w.removeEventListener('scroll', checkViewer, false);
     config.container.removeEventListener('click', removeViewer, false);
   }
 
   // Exit on excape (esc) key pressed
-  function onKeyUp (event) {
+  function onKeyUp(event) {
     event.preventDefault();
     if (event.keyCode === 27) {
       removeViewer();
     }
   }
 
-  function main (target, options = {}) {
+  function main(target, options = {}) {
     // Parse elements
     elements = getElements(target);
 
