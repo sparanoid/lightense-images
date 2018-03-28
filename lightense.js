@@ -103,6 +103,8 @@ var Lightense = function Lightense() {
     offset: 40,
     keyboard: true,
     cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
+    background: 'rgba(255, 255, 255, .98)',
+    backgroundSafari: 'rgba(255, 255, 255, .6)',
     zIndex: 2147483647
   };
 
@@ -156,17 +158,30 @@ var Lightense = function Lightense() {
     }
   }
 
-  function createStyle() {
-    var css = '\n.lightense-backdrop {\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  position: fixed;\n  top: 0;\n  left: 0;\n  overflow: hidden;\n  z-index: ' + (config.zIndex - 1) + ';\n  padding: 0;\n  margin: 0;\n  transition: opacity ' + config.time + 'ms ease;\n  cursor: zoom-out;\n  opacity: 0;\n  background-color: rgba(255, 255, 255, .98);\n  visibility: hidden;\n}\n\n@supports (-webkit-backdrop-filter: blur(30px)) {\n  .lightense-backdrop {\n    background-color: rgba(255, 255, 255, .6);\n    -webkit-backdrop-filter: blur(30px);\n    backdrop-filter: blur(30px);\n  }\n}\n\n.lightense-wrap {\n  position: relative;\n  transition: transform ' + config.time + 'ms ' + config.cubicBezier + ';\n  z-index: ' + config.zIndex + ';\n  pointer-events: none;\n}\n\n.lightense-target {\n  cursor: zoom-in;\n  transition: transform ' + config.time + 'ms ' + config.cubicBezier + ';\n  pointer-events: auto;\n}\n\n.lightense-open {\n  cursor: zoom-out;\n}\n\n.lightense-transitioning {\n  pointer-events: none;\n}';
-
+  function insertCss(styleId, styleContent) {
     var head = d.head || d.getElementsByTagName('head')[0];
-    var style = d.createElement('style');
-    if (style.styleSheet) {
-      style.styleSheet.cssText = css;
-    } else {
-      style.appendChild(d.createTextNode(css));
+
+    // Remove existing instance
+    if (d.getElementById(styleId)) {
+      d.getElementById(styleId).remove();
     }
-    head.appendChild(style);
+
+    // Create new instance
+    var styleEl = d.createElement('style');
+    styleEl.id = styleId;
+
+    // Check if content exists
+    if (styleEl.styleSheet) {
+      styleEl.styleSheet.cssText = styleContent;
+    } else {
+      styleEl.appendChild(d.createTextNode(styleContent));
+    }
+    head.appendChild(styleEl);
+  }
+
+  function createDefaultCss() {
+    var css = '\n.lightense-backdrop {\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  position: fixed;\n  top: 0;\n  left: 0;\n  overflow: hidden;\n  z-index: ' + (config.zIndex - 1) + ';\n  padding: 0;\n  margin: 0;\n  transition: opacity ' + config.time + 'ms ease;\n  cursor: zoom-out;\n  opacity: 0;\n  background-color: ' + config.background + ';\n  visibility: hidden;\n}\n\n@supports (-webkit-backdrop-filter: blur(30px)) {\n  .lightense-backdrop {\n    background-color: ' + config.backgroundSafari + ';\n    -webkit-backdrop-filter: blur(30px);\n    backdrop-filter: blur(30px);\n  }\n}\n\n.lightense-wrap {\n  position: relative;\n  transition: transform ' + config.time + 'ms ' + config.cubicBezier + ';\n  z-index: ' + config.zIndex + ';\n  pointer-events: none;\n}\n\n.lightense-target {\n  cursor: zoom-in;\n  transition: transform ' + config.time + 'ms ' + config.cubicBezier + ';\n  pointer-events: auto;\n}\n\n.lightense-open {\n  cursor: zoom-out;\n}\n\n.lightense-transitioning {\n  pointer-events: none;\n}';
+    insertCss('lightense-images-css', css);
   }
 
   function createBackdrop() {
@@ -187,8 +202,9 @@ var Lightense = function Lightense() {
     var maxScaleFactor = naturalWidth / targetImage.width;
     var viewportWidth = w.innerWidth || d.documentElement.clientWidth || 0;
     var viewportHeight = w.innerHeight || d.documentElement.clientHeight || 0;
-    var viewportWidthOffset = viewportWidth - config.padding;
-    var viewportHeightOffset = viewportHeight - config.padding;
+    var viewportPadding = config.target.getAttribute('data-padding') || config.padding;
+    var viewportWidthOffset = viewportWidth > viewportPadding ? viewportWidth - viewportPadding : viewportWidth - defaults.padding;
+    var viewportHeightOffset = viewportHeight > viewportPadding ? viewportHeight - viewportPadding : viewportHeight - defaults.padding;
     var imageRatio = naturalWidth / naturalHeight;
     var viewportRatio = viewportWidthOffset / viewportHeightOffset;
 
@@ -230,7 +246,19 @@ var Lightense = function Lightense() {
     }, 20);
 
     // Show backdrop
-    if (config.background) config.container.style.backgroundColor = config.background;
+    var item_options = {
+      cubicBezier: config.target.getAttribute('data-lightense-cubic-bezier') || config.cubicBezier,
+      background: config.target.getAttribute('data-lightense-background') || config.target.getAttribute('data-background') || config.background,
+      backgroundSafari: config.target.getAttribute('data-lightense-background-safari') || config.backgroundSafari,
+      zIndex: config.target.getAttribute('data-lightense-z-index') || config.zIndex
+    };
+
+    // Create new config for item-specified styles
+    var config_computed = _extends({}, config, item_options);
+
+    var css = '\n    .lightense-backdrop {\n      z-index: ' + (config_computed.zIndex - 1) + ';\n      transition: opacity ' + config_computed.time + 'ms ease;\n      background-color: ' + config_computed.background + ';\n    }\n\n    @supports (-webkit-backdrop-filter: blur(30px)) {\n      .lightense-backdrop {\n        background-color: ' + config_computed.backgroundSafari + ';\n      }\n    }\n\n    .lightense-wrap {\n      transition: transform ' + config_computed.time + 'ms ' + config_computed.cubicBezier + ';\n      z-index: ' + config_computed.zIndex + ';\n    }\n\n    .lightense-target {\n      transition: transform ' + config_computed.time + 'ms ' + config_computed.cubicBezier + ';\n    }';
+    insertCss('lightense-images-css-computed', css);
+
     config.container.style.visibility = 'visible';
     setTimeout(function () {
       config.container.style.opacity = '1';
@@ -278,10 +306,6 @@ var Lightense = function Lightense() {
     // Save current window scroll position for later use
     config.scrollY = w.scrollY;
 
-    // Save target attributes
-    config.background = config.target.getAttribute('data-background') || false;
-    config.padding = config.target.getAttribute('data-padding') || defaults.padding;
-
     var img = new Image();
     img.onload = function () {
       createTransform(this);
@@ -321,7 +345,7 @@ var Lightense = function Lightense() {
     config = _extends({}, defaults, options);
 
     // Prepare stylesheets
-    createStyle();
+    createDefaultCss();
 
     // Prepare backdrop element
     createBackdrop();
