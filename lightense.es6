@@ -12,6 +12,8 @@ const Lightense = () => {
     offset: 40,
     keyboard: true,
     cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
+    background: 'rgba(255, 255, 255, .98)',
+    backgroundSafari: 'rgba(255, 255, 255, .6)',
     zIndex: 2147483647
   };
 
@@ -65,7 +67,28 @@ const Lightense = () => {
     }
   }
 
-  function createStyle () {
+  function insertCss(styleId, styleContent) {
+    var head = d.head || d.getElementsByTagName('head')[0];
+
+    // Remove existing instance
+    if(d.getElementById(styleId)){
+      d.getElementById(styleId).remove();
+    }
+
+    // Create new instance
+    var styleEl = d.createElement('style');
+    styleEl.id = styleId;
+
+    // Check if content exists
+    if (styleEl.styleSheet) {
+      styleEl.styleSheet.cssText = styleContent;
+    } else {
+      styleEl.appendChild(d.createTextNode(styleContent));
+    }
+    head.appendChild(styleEl);
+  }
+
+  function createDefaultCss () {
     var css = `
 .lightense-backdrop {
   box-sizing: border-box;
@@ -81,13 +104,13 @@ const Lightense = () => {
   transition: opacity ${config.time}ms ease;
   cursor: zoom-out;
   opacity: 0;
-  background-color: rgba(255, 255, 255, .98);
+  background-color: ${config.background};
   visibility: hidden;
 }
 
 @supports (-webkit-backdrop-filter: blur(30px)) {
   .lightense-backdrop {
-    background-color: rgba(255, 255, 255, .6);
+    background-color: ${config.backgroundSafari};
     -webkit-backdrop-filter: blur(30px);
     backdrop-filter: blur(30px);
   }
@@ -113,15 +136,7 @@ const Lightense = () => {
 .lightense-transitioning {
   pointer-events: none;
 }`;
-
-    var head = d.head || d.getElementsByTagName('head')[0];
-    var style = d.createElement('style');
-    if (style.styleSheet) {
-      style.styleSheet.cssText = css;
-    } else {
-      style.appendChild(d.createTextNode(css));
-    }
-    head.appendChild(style);
+    insertCss('lightense-images-css', css);
   }
 
   function createBackdrop () {
@@ -142,8 +157,9 @@ const Lightense = () => {
     var maxScaleFactor = naturalWidth / targetImage.width;
     var viewportWidth  = w.innerWidth || d.documentElement.clientWidth || 0;
     var viewportHeight = w.innerHeight || d.documentElement.clientHeight || 0;
-    var viewportWidthOffset = viewportWidth - config.padding;
-    var viewportHeightOffset = viewportHeight - config.padding;
+    var viewportPadding = config.target.getAttribute('data-padding') || config.padding;
+    var viewportWidthOffset = viewportWidth > viewportPadding ? viewportWidth - viewportPadding : viewportWidth - defaults.padding;
+    var viewportHeightOffset = viewportHeight > viewportPadding ? viewportHeight - viewportPadding : viewportHeight - defaults.padding;
     var imageRatio = naturalWidth / naturalHeight;
     var viewportRatio = viewportWidthOffset / viewportHeightOffset;
 
@@ -185,7 +201,39 @@ const Lightense = () => {
     }, 20);
 
     // Show backdrop
-    if (config.background) config.container.style.backgroundColor = config.background;
+    var item_options = {
+      cubicBezier: config.target.getAttribute('data-lightense-cubic-bezier') || config.cubicBezier,
+      background: config.target.getAttribute('data-lightense-background') || config.target.getAttribute('data-background') || config.background,
+      backgroundSafari: config.target.getAttribute('data-lightense-background-safari') || config.backgroundSafari,
+      zIndex: config.target.getAttribute('data-lightense-z-index') || config.zIndex
+    };
+
+    // Create new config for item-specified styles
+    var config_computed = Object.assign({}, config, item_options);
+
+    var css = `
+    .lightense-backdrop {
+      z-index: ${config_computed.zIndex - 1};
+      transition: opacity ${config_computed.time}ms ease;
+      background-color: ${config_computed.background};
+    }
+
+    @supports (-webkit-backdrop-filter: blur(30px)) {
+      .lightense-backdrop {
+        background-color: ${config_computed.backgroundSafari};
+      }
+    }
+
+    .lightense-wrap {
+      transition: transform ${config_computed.time}ms ${config_computed.cubicBezier};
+      z-index: ${config_computed.zIndex};
+    }
+
+    .lightense-target {
+      transition: transform ${config_computed.time}ms ${config_computed.cubicBezier};
+    }`;
+    insertCss('lightense-images-css-computed', css);
+
     config.container.style.visibility = 'visible';
     setTimeout(function () {
       config.container.style.opacity = '1';
@@ -233,10 +281,6 @@ const Lightense = () => {
     // Save current window scroll position for later use
     config.scrollY = w.scrollY;
 
-    // Save target attributes
-    config.background = config.target.getAttribute('data-background') || false;
-    config.padding = config.target.getAttribute('data-padding') || defaults.padding;
-
     var img = new Image();
     img.onload = function () {
       createTransform(this);
@@ -274,7 +318,7 @@ const Lightense = () => {
     config = Object.assign({}, defaults, options);
 
     // Prepare stylesheets
-    createStyle();
+    createDefaultCss();
 
     // Prepare backdrop element
     createBackdrop();
