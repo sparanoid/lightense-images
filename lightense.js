@@ -104,7 +104,6 @@ var Lightense = function Lightense() {
     keyboard: true,
     cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
     background: 'rgba(255, 255, 255, .98)',
-    backgroundSafari: 'rgba(255, 255, 255, .6)',
     zIndex: 2147483647
   };
 
@@ -158,6 +157,55 @@ var Lightense = function Lightense() {
     }
   }
 
+  function ifHex(input) {
+    return (/^#([A-Fa-f0-9]{3}){1,2}$/.test(input)
+    );
+  }
+
+  // https://regex101.com/r/wHoiD0/1
+  function ifRgb(input) {
+    return (/(rgb\((?:\d{1,3}[,\)] ?){3}(?:\d?\.\d+\))?)/.test(input)
+    );
+  }
+
+  function ifRgba(input) {
+    return (/(rgba\((?:\d{1,3}[,\)] ?){3}(?:\d?\.\d+\))?)/.test(input)
+    );
+  }
+
+  // https://stackoverflow.com/a/21648508/412385
+  function hexToRgbA(input) {
+    var color;
+    if (ifHex(input)) {
+      color = input.substring(1).split('');
+      if (color.length === 3) {
+        color = [color[0], color[0], color[1], color[1], color[2], color[2]];
+      }
+      color = '0x' + color.join('');
+      return 'rgba(' + [color >> 16 & 255, color >> 8 & 255, color & 255].join(', ') + ', 1)';
+    }
+
+    if (ifRgb(input)) {
+      return input.replace(')', ', 1)');
+    }
+
+    if (ifRgba(input)) {
+      return input;
+    }
+
+    // silent errors and return a general rgba color
+    console.log('Invalid color: ' + input);
+    return defaults.background;
+  }
+
+  function computeBackgroundSafari(color) {
+    var background = hexToRgbA(color);
+    var factor = 0.7;
+    var regex = /([\d\.]+)\)$/g;
+    var alpha = regex.exec(background)[1];
+    return background.replace(regex, alpha * factor + ')');
+  }
+
   function insertCss(styleId, styleContent) {
     var head = d.head || d.getElementsByTagName('head')[0];
 
@@ -180,7 +228,7 @@ var Lightense = function Lightense() {
   }
 
   function createDefaultCss() {
-    var css = '\n.lightense-backdrop {\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  position: fixed;\n  top: 0;\n  left: 0;\n  overflow: hidden;\n  z-index: ' + (config.zIndex - 1) + ';\n  padding: 0;\n  margin: 0;\n  transition: opacity ' + config.time + 'ms ease;\n  cursor: zoom-out;\n  opacity: 0;\n  background-color: ' + config.background + ';\n  visibility: hidden;\n}\n\n@supports (-webkit-backdrop-filter: blur(30px)) {\n  .lightense-backdrop {\n    background-color: ' + config.backgroundSafari + ';\n    -webkit-backdrop-filter: blur(30px);\n    backdrop-filter: blur(30px);\n  }\n}\n\n.lightense-wrap {\n  position: relative;\n  transition: transform ' + config.time + 'ms ' + config.cubicBezier + ';\n  z-index: ' + config.zIndex + ';\n  pointer-events: none;\n}\n\n.lightense-target {\n  cursor: zoom-in;\n  transition: transform ' + config.time + 'ms ' + config.cubicBezier + ';\n  pointer-events: auto;\n}\n\n.lightense-open {\n  cursor: zoom-out;\n}\n\n.lightense-transitioning {\n  pointer-events: none;\n}';
+    var css = '\n.lightense-backdrop {\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  position: fixed;\n  top: 0;\n  left: 0;\n  overflow: hidden;\n  z-index: ' + (config.zIndex - 1) + ';\n  padding: 0;\n  margin: 0;\n  transition: opacity ' + config.time + 'ms ease;\n  cursor: zoom-out;\n  opacity: 0;\n  background-color: ' + config.background + ';\n  visibility: hidden;\n}\n\n@supports (-webkit-backdrop-filter: blur(30px)) {\n  .lightense-backdrop {\n    background-color: ' + computeBackgroundSafari(config.background) + ';\n    -webkit-backdrop-filter: blur(30px);\n    backdrop-filter: blur(30px);\n  }\n}\n\n.lightense-wrap {\n  position: relative;\n  transition: transform ' + config.time + 'ms ' + config.cubicBezier + ';\n  z-index: ' + config.zIndex + ';\n  pointer-events: none;\n}\n\n.lightense-target {\n  cursor: zoom-in;\n  transition: transform ' + config.time + 'ms ' + config.cubicBezier + ';\n  pointer-events: auto;\n}\n\n.lightense-open {\n  cursor: zoom-out;\n}\n\n.lightense-transitioning {\n  pointer-events: none;\n}';
     insertCss('lightense-images-css', css);
   }
 
@@ -249,14 +297,13 @@ var Lightense = function Lightense() {
     var item_options = {
       cubicBezier: config.target.getAttribute('data-lightense-cubic-bezier') || config.cubicBezier,
       background: config.target.getAttribute('data-lightense-background') || config.target.getAttribute('data-background') || config.background,
-      backgroundSafari: config.target.getAttribute('data-lightense-background-safari') || config.backgroundSafari,
       zIndex: config.target.getAttribute('data-lightense-z-index') || config.zIndex
     };
 
     // Create new config for item-specified styles
     var config_computed = _extends({}, config, item_options);
 
-    var css = '\n    .lightense-backdrop {\n      z-index: ' + (config_computed.zIndex - 1) + ';\n      transition: opacity ' + config_computed.time + 'ms ease;\n      background-color: ' + config_computed.background + ';\n    }\n\n    @supports (-webkit-backdrop-filter: blur(30px)) {\n      .lightense-backdrop {\n        background-color: ' + config_computed.backgroundSafari + ';\n      }\n    }\n\n    .lightense-wrap {\n      transition: transform ' + config_computed.time + 'ms ' + config_computed.cubicBezier + ';\n      z-index: ' + config_computed.zIndex + ';\n    }\n\n    .lightense-target {\n      transition: transform ' + config_computed.time + 'ms ' + config_computed.cubicBezier + ';\n    }';
+    var css = '\n    .lightense-backdrop {\n      z-index: ' + (config_computed.zIndex - 1) + ';\n      transition: opacity ' + config_computed.time + 'ms ease;\n      background-color: ' + config_computed.background + ';\n    }\n\n    @supports (-webkit-backdrop-filter: blur(30px)) {\n      .lightense-backdrop {\n        background-color: ' + computeBackgroundSafari(config_computed.background) + ';\n      }\n    }\n\n    .lightense-wrap {\n      transition: transform ' + config_computed.time + 'ms ' + config_computed.cubicBezier + ';\n      z-index: ' + config_computed.zIndex + ';\n    }\n\n    .lightense-target {\n      transition: transform ' + config_computed.time + 'ms ' + config_computed.cubicBezier + ';\n    }';
     insertCss('lightense-images-css-computed', css);
 
     config.container.style.visibility = 'visible';
