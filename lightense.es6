@@ -157,7 +157,7 @@ const Lightense = () => {
     var maxScaleFactor = naturalWidth / targetImage.width;
     var viewportWidth  = w.innerWidth || d.documentElement.clientWidth || 0;
     var viewportHeight = w.innerHeight || d.documentElement.clientHeight || 0;
-    var viewportPadding = config.target.getAttribute('data-padding') || config.padding;
+    var viewportPadding = config.target.getAttribute('data-lightense-padding') || config.target.getAttribute('data-padding') || config.padding;
     var viewportWidthOffset = viewportWidth > viewportPadding ? viewportWidth - viewportPadding : viewportWidth - defaults.padding;
     var viewportHeightOffset = viewportHeight > viewportPadding ? viewportHeight - viewportPadding : viewportHeight - defaults.padding;
     var imageRatio = naturalWidth / naturalHeight;
