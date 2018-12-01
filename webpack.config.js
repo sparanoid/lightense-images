@@ -1,7 +1,8 @@
-var webpack = require('webpack');
-var path = require('path');
-var pkg = require('./package.json');
-var banner = `/*! ${ pkg.name } v${ pkg.version } | © ${ pkg.author } | ${ pkg.license } */`;
+const webpack = require('webpack');
+const path = require('path');
+const pkg = require('./package.json');
+const banner = `/*! ${ pkg.name } v${ pkg.version } | © ${ pkg.author } | ${ pkg.license } */`;
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -9,7 +10,7 @@ module.exports = {
     'lightense.min': './lightense.es6',
   },
   output: {
-    path: './',
+    path: path.resolve(__dirname, './'),
     filename: '[name].js',
     libraryTarget: 'umd',
     library: 'Lightense'
@@ -24,11 +25,20 @@ module.exports = {
       }
     ]
   },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        include: /\.min\.js$/,
+        cache: true,
+        parallel: true,
+        uglifyOptions: {
+          mangle: true
+        },
+        sourceMap: true
+      })
+    ]
+  },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      include: /\.min\.js$/,
-      minimize: true
-    }),
     new webpack.BannerPlugin({
       banner: banner,
       raw: true,
