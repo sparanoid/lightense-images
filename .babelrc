@@ -1,7 +1,10 @@
 {
-  "plugins": [
-    "transform-es2015-template-literals",
-    "transform-object-assign"
-  ],
-  "presets": ["es2015"]
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "entry"
+      }
+    ]
+  ]
 }
