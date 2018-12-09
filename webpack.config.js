@@ -21,7 +21,10 @@ module.exports = {
         test: /\.es6$/,
         exclude: /node_modules/,
         enforce: 'pre',
-        loader: 'babel-loader'
+        loader: [
+          'babel-loader',
+          'eslint-loader'
+        ],
       }
     ]
   },
