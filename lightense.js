@@ -172,15 +172,15 @@ var Lightense = function Lightense() {
 
   function ifHex(input) {
     return /^#([A-Fa-f0-9]{3}){1,2}$/.test(input);
-  } // https://regex101.com/r/wHoiD0/1
+  } // https://regex101.com/r/wHoiD0/2
 
 
   function ifRgb(input) {
-    return /(rgb\((?:\d{1,3}[,\)] ?){3}(?:\d?\.\d+\))?)/.test(input);
+    return /(rgb\((?:\d{1,3}[,)] ?){3}(?:\d?\.\d+\))?)/.test(input);
   }
 
   function ifRgba(input) {
-    return /(rgba\((?:\d{1,3}[,\)] ?){3}(?:\d?\.\d+\))?)/.test(input);
+    return /(rgba\((?:\d{1,3}[,)] ?){3}(?:\d?\.\d+\))?)/.test(input);
   } // https://stackoverflow.com/a/21648508/412385
 
 
@@ -207,14 +207,13 @@ var Lightense = function Lightense() {
     } // silent errors and return a general rgba color
 
 
-    console.log('Invalid color: ' + input);
     return defaults.background;
   }
 
   function computeBackgroundSafari(color) {
     var background = hexToRgbA(color);
     var factor = 0.7;
-    var regex = /([\d\.]+)\)$/g;
+    var regex = /([\d.]+)\)$/g;
     var alpha = regex.exec(background)[1];
     return background.replace(regex, alpha * factor + ')');
   }
