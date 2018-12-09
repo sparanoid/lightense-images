@@ -28,7 +28,7 @@ const Lightense = () => {
         throw 'You need to pass an element!';
 
       case 'string':
-        return document.querySelectorAll(elements);
+        return d.querySelectorAll(elements);
 
       case 'object':
         return elements;
@@ -49,7 +49,7 @@ const Lightense = () => {
   }
 
   function track(element) {
-    if (element.src) {
+    if (element.src && !element.classList.contains('lightense-target')) {
       element.classList.add('lightense-target');
       element.addEventListener('click', function(event) {
         if (config.keyboard) {
@@ -185,9 +185,11 @@ const Lightense = () => {
   }
 
   function createBackdrop() {
-    config.container = d.createElement('div');
-    config.container.className = 'lightense-backdrop';
-    d.body.appendChild(config.container);
+    if (!d.querySelector('.lightense-backdrop')) {
+      config.container = d.createElement('div');
+      config.container.className = 'lightense-backdrop';
+      d.body.appendChild(config.container);
+    }
   }
 
   function createTransform(img) {
@@ -253,7 +255,7 @@ const Lightense = () => {
     };
 
     // Create new config for item-specified styles
-    var config_computed = Object.assign({}, config, item_options);
+    var config_computed = {...config, ...item_options};
 
     var css = `
     .lightense-backdrop {
@@ -359,7 +361,7 @@ const Lightense = () => {
     elements = getElements(target);
 
     // Parse user options
-    config = Object.assign({}, defaults, options);
+    config =  {...defaults, ...options};
 
     // Prepare stylesheets
     createDefaultCss();
