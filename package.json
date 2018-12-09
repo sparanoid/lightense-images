@@ -4,7 +4,8 @@
   "description": "A dependency-free pure JavaScript image zooming library less than 2 KB (gzipped)",
   "main": "lightense.js",
   "scripts": {
-    "test": "webpack --progress --mode production",
+    "build": "webpack --progress --mode production",
+    "test": "npm run build",
     "watch": "webpack --progress --watch --mode development"
   },
   "repository": {
@@ -27,6 +28,9 @@
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
     "babel-loader": "^8.0.4",
+    "eslint": "^5.10.0",
+    "eslint-loader": "^2.1.1",
+    "husky": "^1.2.0",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2"
