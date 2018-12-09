@@ -99,6 +99,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ (function(module, exports) {
 
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var Lightense = function Lightense() {
@@ -127,7 +131,7 @@ var Lightense = function Lightense() {
         throw 'You need to pass an element!';
 
       case 'string':
-        return document.querySelectorAll(elements);
+        return d.querySelectorAll(elements);
 
       case 'object':
         return elements;
@@ -149,7 +153,7 @@ var Lightense = function Lightense() {
   }
 
   function track(element) {
-    if (element.src) {
+    if (element.src && !element.classList.contains('lightense-target')) {
       element.classList.add('lightense-target');
       element.addEventListener('click', function (event) {
         if (config.keyboard) {
@@ -241,9 +245,11 @@ var Lightense = function Lightense() {
   }
 
   function createBackdrop() {
-    config.container = d.createElement('div');
-    config.container.className = 'lightense-backdrop';
-    d.body.appendChild(config.container);
+    if (!d.querySelector('.lightense-backdrop')) {
+      config.container = d.createElement('div');
+      config.container.className = 'lightense-backdrop';
+      d.body.appendChild(config.container);
+    }
   }
 
   function createTransform(img) {
@@ -302,7 +308,8 @@ var Lightense = function Lightense() {
       zIndex: config.target.getAttribute('data-lightense-z-index') || config.zIndex
     }; // Create new config for item-specified styles
 
-    var config_computed = Object.assign({}, config, item_options);
+    var config_computed = _objectSpread({}, config, item_options);
+
     var css = "\n    .lightense-backdrop {\n      z-index: ".concat(config_computed.zIndex - 1, ";\n      transition: opacity ").concat(config_computed.time, "ms ease;\n      background-color: ").concat(config_computed.background, ";\n    }\n\n    @supports (-webkit-backdrop-filter: blur(30px)) {\n      .lightense-backdrop {\n        background-color: ").concat(computeBackgroundSafari(config_computed.background), ";\n      }\n    }\n\n    .lightense-wrap {\n      transition: transform ").concat(config_computed.time, "ms ").concat(config_computed.cubicBezier, ";\n      z-index: ").concat(config_computed.zIndex, ";\n    }\n\n    .lightense-target {\n      transition: transform ").concat(config_computed.time, "ms ").concat(config_computed.cubicBezier, ";\n    }");
     insertCss('lightense-images-css-computed', css);
     config.container.style.visibility = 'visible';
@@ -384,7 +391,7 @@ var Lightense = function Lightense() {
     // Parse elements
     elements = getElements(target); // Parse user options
 
-    config = Object.assign({}, defaults, options); // Prepare stylesheets
+    config = _objectSpread({}, defaults, options); // Prepare stylesheets
 
     createDefaultCss(); // Prepare backdrop element
 
