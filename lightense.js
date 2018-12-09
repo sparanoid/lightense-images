@@ -276,8 +276,8 @@ var Lightense = function Lightense() {
     var viewportY = scrollTop + viewportHeight / 2;
     var imageCenterX = targetImage.left + scrollLeft + targetImage.width / 2;
     var imageCenterY = targetImage.top + scrollTop + targetImage.height / 2;
-    config.translateX = viewportX - imageCenterX;
-    config.translateY = viewportY - imageCenterY;
+    config.translateX = Math.round(viewportX - imageCenterX);
+    config.translateY = Math.round(viewportY - imageCenterY);
   }
 
   function createViewer() {
