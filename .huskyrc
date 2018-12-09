@@ -1,0 +1,6 @@
+{
+  "hooks": {
+    "pre-commit": "npm test && git add lightense.js lightense.min.js",
+    "pre-push": "npm run build"
+  }
+}
