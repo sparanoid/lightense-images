@@ -118,34 +118,20 @@
     function() {
       Lightense("img:not(.no-lightense),.lightense", {
         beforeShow(config) {
-          var beforeShowAttr = config.target.getAttribute(
-            "before-show-message"
-          );
-          if (beforeShowAttr) {
-            console.log(beforeShowAttr);
-          }
+          var beforeShowAttr = config.target.getAttribute("before-show-message");
+          beforeShowAttr && console.log(beforeShowAttr);
         },
         afterShow(config) {
           var afterShowAttr = config.target.getAttribute("after-show-message");
-          if (afterShowAttr) {
-            console.log(afterShowAttr);
-          }
+          afterShowAttr && console.log(afterShowAttr);
         },
         beforeHide(config) {
-          var beforeHideMessage = config.target.getAttribute(
-            "before-hide-message"
-          );
-          if (beforeHideMessage) {
-            console.log(beforeHideMessage);
-          }
+          var beforeHideMessage = config.target.getAttribute("before-hide-message");
+          beforeHideMessage && console.log(beforeHideMessage);
         },
         afterHide(config) {
-          var afterHideMessage = config.target.getAttribute(
-            "after-hide-message"
-          );
-          if (afterHideMessage) {
-            console.log(afterHideMessage);
-          }
+          var afterHideMessage = config.target.getAttribute("after-hide-message");
+          afterHideMessage && console.log(afterHideMessage);
         }
       });
     },
