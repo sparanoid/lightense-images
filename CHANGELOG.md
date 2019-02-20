@@ -3,6 +3,7 @@
 
 ### Features
 
+* **js:** add event hooks, props by @ramblinjan
 * **js:** use native css variables ([ea3fcc5](https://github.com/sparanoid/lightense-images/commit/ea3fcc5))
 
 
@@ -108,6 +109,3 @@
 ### Features
 
 * init release ([1ade8c2](https://github.com/sparanoid/lightense-images/commit/1ade8c2))
-
-
-
