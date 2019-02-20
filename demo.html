@@ -17,6 +17,10 @@
     font-weight: 600;
   }
 
+  h2 {
+    margin-top: 2em;
+  }
+
   /* Example: Lazy Lightense */
   .lightense-lazy {
     filter: blur(16px);
@@ -56,12 +60,58 @@
   }
 </style>
 
-<p>
+<h1>
   <a href="http://sparanoid.com/work/lightense-images/" target="_blank"
     >Lightense Images</a
   >
   by <a href="http://sparanoid.com/" target="_blank">Tunghsiao Liu</a>
+</h1>
+
+<h2>General Usage</h2>
+
+<p>
+  <img
+    src="https://d349cztnlupsuf.cloudfront.net/girls_dead_monster_logo.png"
+  />
 </p>
+
+<h2>General Usage</h2>
+
+<p>
+  <img
+    src="https://d349cztnlupsuf.cloudfront.net/railgun-logo.png"
+    data-lightense-background="rgba(23, 29, 54, .8)"
+  />
+</p>
+
+<h2>Disable Lightense Images with Specific Class</h2>
+
+<p>
+  <img
+    src="https://d349cztnlupsuf.cloudfront.net/imouto-logo-large.png"
+    class="no-lightense"
+  />
+</p>
+
+<h2>Custom Padding</h2>
+
+<p>
+  <img
+    src="https://d349cztnlupsuf.cloudfront.net/delicious.com-logo.png"
+    data-lightense-padding="0"
+  />
+</p>
+
+<h2>Custom Background</h2>
+
+<p>
+  <img
+    src="https://d349cztnlupsuf.cloudfront.net/almace-scaffolding-text-vertical.svg"
+    data-lightense-background="rgba(255, 1, 180, .2)"
+  />
+</p>
+
+<h2>Custom Thumbnail Preview</h2>
 
 <p>
   <img
@@ -71,41 +121,15 @@
   />
 </p>
 
+<h2>Event Hooks</h2>
+
 <p>
   <img
     src="https://d349cztnlupsuf.cloudfront.net/girls_dead_monster_logo.png"
-    before-show-message="Showing!"
-    after-show-message="Showed!"
-    before-hide-message="Hiding!"
-    after-hide-message="Hidden!"
-  />
-</p>
-
-<p>
-  <img
-    src="https://d349cztnlupsuf.cloudfront.net/railgun-logo.png"
-    data-lightense-background="rgba(23, 29, 54, .8)"
-  />
-</p>
-
-<p>
-  <img
-    src="https://d349cztnlupsuf.cloudfront.net/imouto-logo-large.png"
-    class="no-lightense"
-  />
-</p>
-
-<p>
-  <img
-    src="https://d349cztnlupsuf.cloudfront.net/delicious.com-logo.png"
-    data-lightense-padding="0"
-  />
-</p>
-
-<p>
-  <img
-    src="https://d349cztnlupsuf.cloudfront.net/almace-scaffolding-text-vertical.svg"
-    data-lightense-background="rgba(255, 1, 180, .2)"
+    before-show-alert="Showing!"
+    after-show-alert="Showed!"
+    before-hide-alert="Hiding!"
+    after-hide-alert="Hidden!"
   />
 </p>
 
@@ -113,30 +137,28 @@
 
 <script>
   // Init Lightense
-  window.addEventListener(
-    "load",
-    function() {
-      Lightense("img:not(.no-lightense),.lightense", {
-        beforeShow(config) {
-          var beforeShowAttr = config.target.getAttribute("before-show-message");
-          beforeShowAttr && console.log(beforeShowAttr);
-        },
-        afterShow(config) {
-          var afterShowAttr = config.target.getAttribute("after-show-message");
-          afterShowAttr && console.log(afterShowAttr);
-        },
-        beforeHide(config) {
-          var beforeHideMessage = config.target.getAttribute("before-hide-message");
-          beforeHideMessage && console.log(beforeHideMessage);
-        },
-        afterHide(config) {
-          var afterHideMessage = config.target.getAttribute("after-hide-message");
-          afterHideMessage && console.log(afterHideMessage);
-        }
-      });
-    },
-    false
-  );
+  window.addEventListener("load", function() {
+    Lightense("img:not(.no-lightense),.lightense", {
+
+      // Example: Event Hooks
+      beforeShow(config) {
+        var beforeShowAttr = config.target.getAttribute("before-show-alert");
+        beforeShowAttr && alert(beforeShowAttr);
+      },
+      afterShow(config) {
+        var afterShowAttr = config.target.getAttribute("after-show-alert");
+        afterShowAttr && alert(afterShowAttr);
+      },
+      beforeHide(config) {
+        var beforeHideMessage = config.target.getAttribute("before-hide-alert");
+        beforeHideMessage && alert(beforeHideMessage);
+      },
+      afterHide(config) {
+        var afterHideMessage = config.target.getAttribute("after-hide-alert");
+        afterHideMessage && alert(afterHideMessage);
+      }
+    });
+  }, false);
 
   // Example: Lazy Lightense
   document.addEventListener("DOMContentLoaded", function(e) {
