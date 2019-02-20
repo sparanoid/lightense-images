@@ -161,6 +161,14 @@ const Lightense = () => {
 
   function createDefaultCss() {
     var css = `
+:root {
+  --lightense-z-index: ${config.zIndex - 1};
+  --lightense-backdrop: ${config.background};
+  --lightense-backdrop-safari: ${computeBackgroundSafari(config.background)};
+  --lightense-duration: ${config.time}ms;
+  --lightense-timing-func: ${config.cubicBezier};
+}
+
 .lightense-backdrop {
   box-sizing: border-box;
   width: 100%;
@@ -169,19 +177,19 @@ const Lightense = () => {
   top: 0;
   left: 0;
   overflow: hidden;
-  z-index: ${config.zIndex - 1};
+  z-index: calc(var(--lightense-z-index) - 1);
   padding: 0;
   margin: 0;
-  transition: opacity ${config.time}ms ease;
+  transition: opacity var(--lightense-duration) ease;
   cursor: zoom-out;
   opacity: 0;
-  background-color: ${config.background};
+  background-color: var(--lightense-backdrop);
   visibility: hidden;
 }
 
 @supports (-webkit-backdrop-filter: blur(30px)) {
   .lightense-backdrop {
-    background-color: ${computeBackgroundSafari(config.background)};
+    background-color: var(--lightense-backdrop-safari);
     -webkit-backdrop-filter: blur(30px);
     backdrop-filter: blur(30px);
   }
@@ -189,14 +197,14 @@ const Lightense = () => {
 
 .lightense-wrap {
   position: relative;
-  transition: transform ${config.time}ms ${config.cubicBezier};
-  z-index: ${config.zIndex};
+  transition: transform var(--lightense-duration) var(--lightense-timing-func);
+  z-index: var(--lightense-z-index);
   pointer-events: none;
 }
 
 .lightense-target {
   cursor: zoom-in;
-  transition: transform ${config.time}ms ${config.cubicBezier};
+  transition: transform var(--lightense-duration) var(--lightense-timing-func);
   pointer-events: auto;
 }
 
@@ -309,29 +317,14 @@ const Lightense = () => {
     var config_computed = {...config, ...item_options};
 
     var css = `
-    .lightense-backdrop {
-      z-index: ${config_computed.zIndex - 1};
-      transition: opacity ${config_computed.time}ms ease;
-      background-color: ${config_computed.background};
-    }
-
-    @supports (-webkit-backdrop-filter: blur(30px)) {
-      .lightense-backdrop {
-        background-color: ${computeBackgroundSafari(config_computed.background)};
-      }
-    }
-
-    .lightense-wrap {
-      transition: transform ${config_computed.time}ms ${
-      config_computed.cubicBezier
-    };
-      z-index: ${config_computed.zIndex};
-    }
-
-    .lightense-target {
-      transition: transform ${config_computed.time}ms ${
-      config_computed.cubicBezier
-    };
+    :root {
+      --lightense-z-index: ${config_computed.zIndex - 1};
+      --lightense-backdrop: ${config_computed.background};
+      --lightense-duration: ${config_computed.time}ms;
+      --lightense-timing-func: ${config_computed.cubicBezier};
+      --lightense-backdrop-safari: ${
+        computeBackgroundSafari(config_computed.background)
+      };
     }`;
     insertCss('lightense-images-css-computed', css);
 
