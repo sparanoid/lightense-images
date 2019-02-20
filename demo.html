@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <style>
   /* Basic styles */
@@ -56,58 +56,136 @@
   }
 </style>
 
-<p><a href="http://sparanoid.com/work/lightense-images/" target="_blank">Lightense Images</a> by <a href="http://sparanoid.com/" target="_blank">Tunghsiao Liu</a></p>
+<p>
+  <a href="http://sparanoid.com/work/lightense-images/" target="_blank"
+    >Lightense Images</a
+  >
+  by <a href="http://sparanoid.com/" target="_blank">Tunghsiao Liu</a>
+</p>
 
-<p><img src="https://d349cztnlupsuf.cloudfront.net/tianjin-impression-brochure-03-thumb.jpg?test" data-original="https://d349cztnlupsuf.cloudfront.net/tianjin-impression-brochure-03.jpg" class="lightense-lazy"></p>
+<p>
+  <img
+    src="https://d349cztnlupsuf.cloudfront.net/tianjin-impression-brochure-03-thumb.jpg?test"
+    data-original="https://d349cztnlupsuf.cloudfront.net/tianjin-impression-brochure-03.jpg"
+    class="lightense-lazy"
+  />
+</p>
 
-<p><img src="https://d349cztnlupsuf.cloudfront.net/girls_dead_monster_logo.png"></p>
+<p>
+  <img
+    src="https://d349cztnlupsuf.cloudfront.net/girls_dead_monster_logo.png"
+    before-show-message="Showing!"
+    after-show-message="Showed!"
+    before-hide-message="Hiding!"
+    after-hide-message="Hidden!"
+  />
+</p>
 
-<p><img src="https://d349cztnlupsuf.cloudfront.net/railgun-logo.png" data-lightense-background="rgba(23, 29, 54, .8)"></p>
+<p>
+  <img
+    src="https://d349cztnlupsuf.cloudfront.net/railgun-logo.png"
+    data-lightense-background="rgba(23, 29, 54, .8)"
+  />
+</p>
 
-<p><img src="https://d349cztnlupsuf.cloudfront.net/imouto-logo-large.png" class="no-lightense"></p>
+<p>
+  <img
+    src="https://d349cztnlupsuf.cloudfront.net/imouto-logo-large.png"
+    class="no-lightense"
+  />
+</p>
 
-<p><img src="https://d349cztnlupsuf.cloudfront.net/delicious.com-logo.png" data-lightense-padding="0"></p>
+<p>
+  <img
+    src="https://d349cztnlupsuf.cloudfront.net/delicious.com-logo.png"
+    data-lightense-padding="0"
+  />
+</p>
 
-<p><img src="https://d349cztnlupsuf.cloudfront.net/almace-scaffolding-text-vertical.svg" data-lightense-background="rgba(255, 1, 180, .2)"></p>
+<p>
+  <img
+    src="https://d349cztnlupsuf.cloudfront.net/almace-scaffolding-text-vertical.svg"
+    data-lightense-background="rgba(255, 1, 180, .2)"
+  />
+</p>
 
 <script src="lightense.js"></script>
 
 <script>
   // Init Lightense
-  window.addEventListener('load', function () {
-    Lightense('img:not(.no-lightense),.lightense');
-  }, false);
+  window.addEventListener(
+    "load",
+    function() {
+      Lightense("img:not(.no-lightense),.lightense", {
+        beforeShow(config) {
+          var beforeShowAttr = config.target.getAttribute(
+            "before-show-message"
+          );
+          if (beforeShowAttr) {
+            console.log(beforeShowAttr);
+          }
+        },
+        afterShow(config) {
+          var afterShowAttr = config.target.getAttribute("after-show-message");
+          if (afterShowAttr) {
+            console.log(afterShowAttr);
+          }
+        },
+        beforeHide(config) {
+          var beforeHideMessage = config.target.getAttribute(
+            "before-hide-message"
+          );
+          if (beforeHideMessage) {
+            console.log(beforeHideMessage);
+          }
+        },
+        afterHide(config) {
+          var afterHideMessage = config.target.getAttribute(
+            "after-hide-message"
+          );
+          if (afterHideMessage) {
+            console.log(afterHideMessage);
+          }
+        }
+      });
+    },
+    false
+  );
 
   // Example: Lazy Lightense
-  document.addEventListener('DOMContentLoaded', function (e) {
-    function createDom (type, cssClass) {
+  document.addEventListener("DOMContentLoaded", function(e) {
+    function createDom(type, cssClass) {
       var div = document.createElement(type);
       div.className = cssClass;
       return div;
     }
 
-    var thumb = document.querySelector('.lightense-lazy');
+    var thumb = document.querySelector(".lightense-lazy");
     var original = new Image();
 
     // Init wrapper
-    var wrap = createDom('div', 'lightense-lazy-wrap');
+    var wrap = createDom("div", "lightense-lazy-wrap");
     thumb.parentNode.insertBefore(wrap, thumb);
     wrap.appendChild(thumb);
 
     // Wrap thumbnail
-    var thumbWrap = createDom('div', 'lightense-lazy-thumb');
+    var thumbWrap = createDom("div", "lightense-lazy-thumb");
     thumbWrap.appendChild(thumb);
     wrap.appendChild(thumbWrap);
 
     // Wrap original
-    var originalWrap = createDom('div', 'lightense-lazy-large');
+    var originalWrap = createDom("div", "lightense-lazy-large");
     original.src = thumb.dataset.original;
     originalWrap.appendChild(original);
     wrap.appendChild(originalWrap);
 
     // Load original image
-    original.addEventListener('load', function () {
-      wrap.classList.add('on');
-    }, false);
+    original.addEventListener(
+      "load",
+      function() {
+        wrap.classList.add("on");
+      },
+      false
+    );
   });
 </script>

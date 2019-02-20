@@ -13,11 +13,30 @@ const Lightense = () => {
     keyboard: true,
     cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
     background: 'rgba(255, 255, 255, .98)',
-    zIndex: 2147483647
+    zIndex: 2147483647,
+    /* eslint-disable no-undefined */
+    beforeShow: undefined,
+    afterShow: undefined,
+    beforeHide: undefined,
+    afterHide: undefined
+    /* eslint-enable no-undefined  */
   };
-
   // Init user options
   var config = {};
+
+  function invokeCustomHook(methodName) {
+    const method = config[methodName];
+
+    if (!method) {
+      return;
+    }
+
+    if (typeof method !== 'function') {
+      throw `config.${methodName} must be a function!`;
+    }
+
+    Reflect.apply(method, config, [config]);
+  }
 
   // Init target elements
   var elements;
@@ -51,18 +70,22 @@ const Lightense = () => {
   function track(element) {
     if (element.src && !element.classList.contains('lightense-target')) {
       element.classList.add('lightense-target');
-      element.addEventListener('click', function(event) {
-        if (config.keyboard) {
-          // If Command (macOS) or Ctrl (Windows) key pressed, stop processing
-          // and open the image in a new tab
-          if (event.metaKey || event.ctrlKey) {
-            return w.open(element.src, '_blank');
+      element.addEventListener(
+        'click',
+        function(event) {
+          if (config.keyboard) {
+            // If Command (macOS) or Ctrl (Windows) key pressed, stop processing
+            // and open the image in a new tab
+            if (event.metaKey || event.ctrlKey) {
+              return w.open(element.src, '_blank');
+            }
           }
-        }
 
-        // Init instance
-        init(this);
-      }, false);
+          // Init instance
+          init(this);
+        },
+        false
+      );
     }
   }
 
@@ -80,7 +103,7 @@ const Lightense = () => {
   }
 
   // https://stackoverflow.com/a/21648508/412385
-  function hexToRgbA(input){
+  function hexToRgbA(input) {
     var color;
     if (ifHex(input)) {
       color = input.substring(1).split('');
@@ -88,7 +111,11 @@ const Lightense = () => {
         color = [color[0], color[0], color[1], color[1], color[2], color[2]];
       }
       color = '0x' + color.join('');
-      return 'rgba(' + [(color >> 16) & 255, (color >> 8) & 255, color & 255].join(', ') + ', 1)';
+      return (
+        'rgba(' +
+        [(color >> 16) & 255, (color >> 8) & 255, color & 255].join(', ') +
+        ', 1)'
+      );
     }
 
     if (ifRgb(input)) {
@@ -115,7 +142,7 @@ const Lightense = () => {
     var head = d.head || d.getElementsByTagName('head')[0];
 
     // Remove existing instance
-    if(d.getElementById(styleId)){
+    if (d.getElementById(styleId)) {
       d.getElementById(styleId).remove();
     }
 
@@ -201,27 +228,41 @@ const Lightense = () => {
     var scrollLeft = w.pageXOffset || d.documentElement.scrollLeft || 0;
     var targetImage = config.target.getBoundingClientRect();
     var maxScaleFactor = naturalWidth / targetImage.width;
-    var viewportWidth  = w.innerWidth || d.documentElement.clientWidth || 0;
+    var viewportWidth = w.innerWidth || d.documentElement.clientWidth || 0;
     var viewportHeight = w.innerHeight || d.documentElement.clientHeight || 0;
-    var viewportPadding = config.target.getAttribute('data-lightense-padding') || config.target.getAttribute('data-padding') || config.padding;
-    var viewportWidthOffset = viewportWidth > viewportPadding ? viewportWidth - viewportPadding : viewportWidth - defaults.padding;
-    var viewportHeightOffset = viewportHeight > viewportPadding ? viewportHeight - viewportPadding : viewportHeight - defaults.padding;
+    var viewportPadding =
+      config.target.getAttribute('data-lightense-padding') ||
+      config.target.getAttribute('data-padding') ||
+      config.padding;
+    var viewportWidthOffset =
+      viewportWidth > viewportPadding
+        ? viewportWidth - viewportPadding
+        : viewportWidth - defaults.padding;
+    var viewportHeightOffset =
+      viewportHeight > viewportPadding
+        ? viewportHeight - viewportPadding
+        : viewportHeight - defaults.padding;
     var imageRatio = naturalWidth / naturalHeight;
     var viewportRatio = viewportWidthOffset / viewportHeightOffset;
 
-    if (naturalWidth < viewportWidthOffset && naturalHeight < viewportHeightOffset) {
+    if (
+      naturalWidth < viewportWidthOffset &&
+      naturalHeight < viewportHeightOffset
+    ) {
       config.scaleFactor = maxScaleFactor;
     } else if (imageRatio < viewportRatio) {
-      config.scaleFactor = (viewportHeightOffset / naturalHeight) * maxScaleFactor;
+      config.scaleFactor =
+        (viewportHeightOffset / naturalHeight) * maxScaleFactor;
     } else {
-      config.scaleFactor = (viewportWidthOffset / naturalWidth) * maxScaleFactor;
+      config.scaleFactor =
+        (viewportWidthOffset / naturalWidth) * maxScaleFactor;
     }
 
     // Calc animation
-    var viewportX = (viewportWidth / 2);
-    var viewportY = scrollTop + (viewportHeight / 2);
-    var imageCenterX = targetImage.left + scrollLeft + (targetImage.width / 2);
-    var imageCenterY = targetImage.top + scrollTop + (targetImage.height / 2);
+    var viewportX = viewportWidth / 2;
+    var viewportY = scrollTop + viewportHeight / 2;
+    var imageCenterX = targetImage.left + scrollLeft + targetImage.width / 2;
+    var imageCenterY = targetImage.top + scrollTop + targetImage.height / 2;
 
     config.translateX = Math.round(viewportX - imageCenterX);
     config.translateY = Math.round(viewportY - imageCenterY);
@@ -243,14 +284,25 @@ const Lightense = () => {
     config.target.parentNode.insertBefore(config.wrap, config.target);
     config.wrap.appendChild(config.target);
     setTimeout(function() {
-      config.wrap.style.transform = 'translate3d(' + config.translateX + 'px, ' + config.translateY + 'px, 0)';
+      config.wrap.style.transform =
+        'translate3d(' +
+        config.translateX +
+        'px, ' +
+        config.translateY +
+        'px, 0)';
     }, 20);
 
     // Show backdrop
     var item_options = {
-      cubicBezier: config.target.getAttribute('data-lightense-cubic-bezier') || config.cubicBezier,
-      background: config.target.getAttribute('data-lightense-background') || config.target.getAttribute('data-background') || config.background,
-      zIndex: config.target.getAttribute('data-lightense-z-index') || config.zIndex
+      cubicBezier:
+        config.target.getAttribute('data-lightense-cubic-bezier') ||
+        config.cubicBezier,
+      background:
+        config.target.getAttribute('data-lightense-background') ||
+        config.target.getAttribute('data-background') ||
+        config.background,
+      zIndex:
+        config.target.getAttribute('data-lightense-z-index') || config.zIndex
     };
 
     // Create new config for item-specified styles
@@ -270,12 +322,16 @@ const Lightense = () => {
     }
 
     .lightense-wrap {
-      transition: transform ${config_computed.time}ms ${config_computed.cubicBezier};
+      transition: transform ${config_computed.time}ms ${
+      config_computed.cubicBezier
+    };
       z-index: ${config_computed.zIndex};
     }
 
     .lightense-target {
-      transition: transform ${config_computed.time}ms ${config_computed.cubicBezier};
+      transition: transform ${config_computed.time}ms ${
+      config_computed.cubicBezier
+    };
     }`;
     insertCss('lightense-images-css-computed', css);
 
@@ -286,6 +342,7 @@ const Lightense = () => {
   }
 
   function removeViewer() {
+    invokeCustomHook('beforeHide');
     unbindEvents();
 
     config.target.classList.remove('lightense-open');
@@ -300,6 +357,7 @@ const Lightense = () => {
 
     // Hide backdrop and remove target element wrapper
     setTimeout(function() {
+      invokeCustomHook('afterHide');
       config.container.style.visibility = '';
       config.container.style.backgroundColor = '';
       config.wrap.parentNode.replaceChild(config.target, config.wrap);
@@ -314,6 +372,14 @@ const Lightense = () => {
     }
   }
 
+  function once(target, event, handler) {
+    target.addEventListener(event, function fn(args) {
+      Reflect.apply(handler, this, args);
+
+      target.removeEventListener(event, fn);
+    });
+  }
+
   function init(element) {
     config.target = element;
 
@@ -323,8 +389,14 @@ const Lightense = () => {
       return removeViewer();
     }
 
+    invokeCustomHook('beforeShow');
+
     // Save current window scroll position for later use
     config.scrollY = w.scrollY;
+
+    once(config.target, 'transitionend', function() {
+      invokeCustomHook('afterShow');
+    });
 
     var img = new Image();
     img.onload = function() {
@@ -332,6 +404,7 @@ const Lightense = () => {
       createViewer();
       bindEvents();
     };
+
     img.src = config.target.src;
   }
 
@@ -360,7 +433,7 @@ const Lightense = () => {
     elements = getElements(target);
 
     // Parse user options
-    config =  {...defaults, ...options};
+    config = {...defaults, ...options};
 
     // Prepare stylesheets
     createDefaultCss();

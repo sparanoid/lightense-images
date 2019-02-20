@@ -118,10 +118,33 @@ var Lightense = function Lightense() {
     keyboard: true,
     cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
     background: 'rgba(255, 255, 255, .98)',
-    zIndex: 2147483647
+    zIndex: 2147483647,
+
+    /* eslint-disable no-undefined */
+    beforeShow: undefined,
+    afterShow: undefined,
+    beforeHide: undefined,
+    afterHide: undefined
+    /* eslint-enable no-undefined  */
+
   }; // Init user options
 
-  var config = {}; // Init target elements
+  var config = {};
+
+  function invokeCustomHook(methodName) {
+    var method = config[methodName];
+
+    if (!method) {
+      return;
+    }
+
+    if (typeof method !== 'function') {
+      throw "config.".concat(methodName, " must be a function!");
+    }
+
+    Reflect.apply(method, config, [config]);
+  } // Init target elements
+
 
   var elements;
 
@@ -318,6 +341,7 @@ var Lightense = function Lightense() {
   }
 
   function removeViewer() {
+    invokeCustomHook('beforeHide');
     unbindEvents();
     config.target.classList.remove('lightense-open'); // Remove transform styles
 
@@ -328,6 +352,7 @@ var Lightense = function Lightense() {
     config.container.style.opacity = ''; // Hide backdrop and remove target element wrapper
 
     setTimeout(function () {
+      invokeCustomHook('afterHide');
       config.container.style.visibility = '';
       config.container.style.backgroundColor = '';
       config.wrap.parentNode.replaceChild(config.target, config.wrap);
@@ -343,16 +368,27 @@ var Lightense = function Lightense() {
     }
   }
 
+  function once(target, event, handler) {
+    target.addEventListener(event, function fn(args) {
+      Reflect.apply(handler, this, args);
+      target.removeEventListener(event, fn);
+    });
+  }
+
   function init(element) {
     config.target = element; // TODO: need refine
     // If element already openned, close it
 
     if (config.target.classList.contains('lightense-open')) {
       return removeViewer();
-    } // Save current window scroll position for later use
+    }
 
+    invokeCustomHook('beforeShow'); // Save current window scroll position for later use
 
     config.scrollY = w.scrollY;
+    once(config.target, 'transitionend', function () {
+      invokeCustomHook('afterShow');
+    });
     var img = new Image();
 
     img.onload = function () {
