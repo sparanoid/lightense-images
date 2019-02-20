@@ -1,3 +1,12 @@
+## [1.0.8](https://github.com/sparanoid/lightense-images/compare/v1.0.7...v1.0.8) (2019-02-20)
+
+
+### Features
+
+* **js:** use native css variables ([ea3fcc5](https://github.com/sparanoid/lightense-images/commit/ea3fcc5))
+
+
+
 ## [1.0.7](https://github.com/sparanoid/lightense-images/compare/v1.0.6...v1.0.7) (2019-02-19)
 
 
