@@ -32,7 +32,7 @@
     "babel-loader": "^8.0.4",
     "eslint": "^5.10.0",
     "eslint-loader": "^2.1.1",
-    "husky": "^2.0.0",
+    "husky": "^3.0.0",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2"
