@@ -1,9 +1,23 @@
+## [1.0.9](https://github.com/sparanoid/lightense-images/compare/v1.0.8...v1.0.9) (2019-09-01)
+
+
+### Bug Fixes
+
+* **css:** blur effect not supported corrently for chrome ([640acc9](https://github.com/sparanoid/lightense-images/commit/640acc9))
+* **js:** z-index too high, ref https://github.com/sparanoid/lightense-images/issues/41 ([a60342a](https://github.com/sparanoid/lightense-images/commit/a60342a))
+
+
+### Features
+
+* update demo page ([5af3700](https://github.com/sparanoid/lightense-images/commit/5af3700))
+
+
+
 ## [1.0.8](https://github.com/sparanoid/lightense-images/compare/v1.0.7...v1.0.8) (2019-02-20)
 
 
 ### Features
 
-* **js:** add event hooks, props by @ramblinjan
 * **js:** use native css variables ([ea3fcc5](https://github.com/sparanoid/lightense-images/commit/ea3fcc5))
 
 
@@ -109,3 +123,6 @@
 ### Features
 
 * init release ([1ade8c2](https://github.com/sparanoid/lightense-images/commit/1ade8c2))
+
+
+
