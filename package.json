@@ -30,7 +30,7 @@
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
     "babel-loader": "^8.0.4",
-    "eslint": "^5.10.0",
+    "eslint": "^6.0.0",
     "eslint-loader": "^3.0.0",
     "husky": "^3.0.0",
     "uglifyjs-webpack-plugin": "^2.0.1",
