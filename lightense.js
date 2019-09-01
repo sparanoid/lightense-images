@@ -1,4 +1,4 @@
-/*! lightense-images v1.0.8 | © Sparanoid | MIT */
+/*! lightense-images v1.0.9 | © Sparanoid | MIT */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
