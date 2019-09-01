@@ -118,7 +118,7 @@ var Lightense = function Lightense() {
     keyboard: true,
     cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
     background: 'rgba(255, 255, 255, .98)',
-    zIndex: 2147483647,
+    zIndex: 1000000,
 
     /* eslint-disable no-undefined */
     beforeShow: undefined,
