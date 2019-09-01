@@ -191,6 +191,12 @@ const Lightense = () => {
   .lightense-backdrop {
     background-color: var(--lightense-backdrop-safari);
     -webkit-backdrop-filter: blur(30px);
+  }
+}
+
+@supports (backdrop-filter: blur(30px)) {
+  .lightense-backdrop {
+    background-color: var(--lightense-backdrop-safari);
     backdrop-filter: blur(30px);
   }
 }
