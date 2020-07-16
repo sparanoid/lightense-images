@@ -99,11 +99,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ (function(module, exports) {
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var Lightense = function Lightense() {
   'use strict'; // Save some bytes
@@ -117,7 +119,7 @@ var Lightense = function Lightense() {
     offset: 40,
     keyboard: true,
     cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
-    background: 'rgba(255, 255, 255, .98)',
+    background: 'var(--bg-color-80, rgba(255, 255, 255, .98))',
     zIndex: 1000000,
 
     /* eslint-disable no-undefined */
@@ -193,54 +195,6 @@ var Lightense = function Lightense() {
     }
   }
 
-  function ifHex(input) {
-    return /^#([A-Fa-f0-9]{3}){1,2}$/.test(input);
-  } // https://regex101.com/r/wHoiD0/2
-
-
-  function ifRgb(input) {
-    return /(rgb\((?:\d{1,3}[,)] ?){3}(?:\d?\.\d+\))?)/.test(input);
-  }
-
-  function ifRgba(input) {
-    return /(rgba\((?:\d{1,3}[,)] ?){3}(?:\d?\.\d+\))?)/.test(input);
-  } // https://stackoverflow.com/a/21648508/412385
-
-
-  function hexToRgbA(input) {
-    var color;
-
-    if (ifHex(input)) {
-      color = input.substring(1).split('');
-
-      if (color.length === 3) {
-        color = [color[0], color[0], color[1], color[1], color[2], color[2]];
-      }
-
-      color = '0x' + color.join('');
-      return 'rgba(' + [color >> 16 & 255, color >> 8 & 255, color & 255].join(', ') + ', 1)';
-    }
-
-    if (ifRgb(input)) {
-      return input.replace(')', ', 1)');
-    }
-
-    if (ifRgba(input)) {
-      return input;
-    } // silent errors and return a general rgba color
-
-
-    return defaults.background;
-  }
-
-  function computeBackgroundSafari(color) {
-    var background = hexToRgbA(color);
-    var factor = 0.7;
-    var regex = /([\d.]+)\)$/g;
-    var alpha = regex.exec(background)[1];
-    return background.replace(regex, alpha * factor + ')');
-  }
-
   function insertCss(styleId, styleContent) {
     var head = d.head || d.getElementsByTagName('head')[0]; // Remove existing instance
 
@@ -262,7 +216,7 @@ var Lightense = function Lightense() {
   }
 
   function createDefaultCss() {
-    var css = "\n:root {\n  --lightense-z-index: ".concat(config.zIndex - 1, ";\n  --lightense-backdrop: ").concat(config.background, ";\n  --lightense-backdrop-safari: ").concat(computeBackgroundSafari(config.background), ";\n  --lightense-duration: ").concat(config.time, "ms;\n  --lightense-timing-func: ").concat(config.cubicBezier, ";\n}\n\n.lightense-backdrop {\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  position: fixed;\n  top: 0;\n  left: 0;\n  overflow: hidden;\n  z-index: calc(var(--lightense-z-index) - 1);\n  padding: 0;\n  margin: 0;\n  transition: opacity var(--lightense-duration) ease;\n  cursor: zoom-out;\n  opacity: 0;\n  background-color: var(--lightense-backdrop);\n  visibility: hidden;\n}\n\n@supports (-webkit-backdrop-filter: blur(30px)) {\n  .lightense-backdrop {\n    background-color: var(--lightense-backdrop-safari);\n    -webkit-backdrop-filter: blur(30px);\n  }\n}\n\n@supports (backdrop-filter: blur(30px)) {\n  .lightense-backdrop {\n    background-color: var(--lightense-backdrop-safari);\n    backdrop-filter: blur(30px);\n  }\n}\n\n.lightense-wrap {\n  position: relative;\n  transition: transform var(--lightense-duration) var(--lightense-timing-func);\n  z-index: var(--lightense-z-index);\n  pointer-events: none;\n}\n\n.lightense-target {\n  cursor: zoom-in;\n  transition: transform var(--lightense-duration) var(--lightense-timing-func);\n  pointer-events: auto;\n}\n\n.lightense-open {\n  cursor: zoom-out;\n}\n\n.lightense-transitioning {\n  pointer-events: none;\n}");
+    var css = "\n:root {\n  --lightense-z-index: ".concat(config.zIndex - 1, ";\n  --lightense-backdrop: ").concat(config.background, ";\n  --lightense-duration: ").concat(config.time, "ms;\n  --lightense-timing-func: ").concat(config.cubicBezier, ";\n}\n\n.lightense-backdrop {\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  position: fixed;\n  top: 0;\n  left: 0;\n  overflow: hidden;\n  z-index: calc(var(--lightense-z-index) - 1);\n  padding: 0;\n  margin: 0;\n  transition: opacity var(--lightense-duration) ease;\n  cursor: zoom-out;\n  opacity: 0;\n  background-color: var(--lightense-backdrop);\n  visibility: hidden;\n}\n\n@supports (-webkit-backdrop-filter: blur(30px)) {\n  .lightense-backdrop {\n    background-color: var(--lightense-backdrop);\n    -webkit-backdrop-filter: blur(30px);\n  }\n}\n\n@supports (backdrop-filter: blur(30px)) {\n  .lightense-backdrop {\n    background-color: var(--lightense-backdrop);\n    backdrop-filter: blur(30px);\n  }\n}\n\n.lightense-wrap {\n  position: relative;\n  transition: transform var(--lightense-duration) var(--lightense-timing-func);\n  z-index: var(--lightense-z-index);\n  pointer-events: none;\n}\n\n.lightense-target {\n  cursor: zoom-in;\n  transition: transform var(--lightense-duration) var(--lightense-timing-func);\n  pointer-events: auto;\n}\n\n.lightense-open {\n  cursor: zoom-out;\n}\n\n.lightense-transitioning {\n  pointer-events: none;\n}");
     insertCss('lightense-images-css', css);
   }
 
@@ -330,9 +284,9 @@ var Lightense = function Lightense() {
       zIndex: config.target.getAttribute('data-lightense-z-index') || config.zIndex
     }; // Create new config for item-specified styles
 
-    var config_computed = _objectSpread({}, config, item_options);
+    var config_computed = _objectSpread(_objectSpread({}, config), item_options);
 
-    var css = "\n    :root {\n      --lightense-z-index: ".concat(config_computed.zIndex - 1, ";\n      --lightense-backdrop: ").concat(config_computed.background, ";\n      --lightense-duration: ").concat(config_computed.time, "ms;\n      --lightense-timing-func: ").concat(config_computed.cubicBezier, ";\n      --lightense-backdrop-safari: ").concat(computeBackgroundSafari(config_computed.background), ";\n    }");
+    var css = "\n    :root {\n      --lightense-z-index: ".concat(config_computed.zIndex - 1, ";\n      --lightense-backdrop: ").concat(config_computed.background, ";\n      --lightense-duration: ").concat(config_computed.time, "ms;\n      --lightense-timing-func: ").concat(config_computed.cubicBezier, ";\n    }");
     insertCss('lightense-images-css-computed', css);
     config.container.style.visibility = 'visible';
     setTimeout(function () {
@@ -426,7 +380,7 @@ var Lightense = function Lightense() {
     // Parse elements
     elements = getElements(target); // Parse user options
 
-    config = _objectSpread({}, defaults, options); // Prepare stylesheets
+    config = _objectSpread(_objectSpread({}, defaults), options); // Prepare stylesheets
 
     createDefaultCss(); // Prepare backdrop element
 

@@ -1,8 +1,28 @@
 <!DOCTYPE html>
 
+<link rel="stylesheet" href="https://unpkg.com/root-variables">
+
 <style>
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --text-color-h: 213;
+      --text-color-s: 32%;
+      --text-color-l: 70%;
+
+      --link-color-h: 202;
+      --link-color-s: 100%;
+      --link-color-l: 60%;
+
+      --bg-color-h: 220;
+      --bg-color-s: 10%;
+      --bg-color-l: 12%;
+    }
+  }
+
   /* Basic styles */
   body {
+    color: var(--text-color);
+    background: var(--bg-color);
     padding: 1vw 2vw;
     font-family: "Helvetica Neue", Arial, sans-serif;
     text-align: center;
@@ -13,7 +33,7 @@
   }
 
   a {
-    color: #000;
+    color: var(--link-color);
     font-weight: 600;
   }
 
@@ -61,10 +81,10 @@
 </style>
 
 <h1>
-  <a href="http://sparanoid.com/work/lightense-images/" target="_blank"
+  <a href="https://sparanoid.com/work/lightense-images/" target="_blank"
     >Lightense Images</a
   >
-  by <a href="http://sparanoid.com/" target="_blank">Tunghsiao Liu</a>
+  by <a href="https://sparanoid.com/" target="_blank">Tunghsiao Liu</a>
 </h1>
 
 <h2>General Usage</h2>
