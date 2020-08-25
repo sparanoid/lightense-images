@@ -24,5 +24,8 @@ nbproject
 *.sublime-workspace
 .idea
 
+# npm package lock
+package-lock.json
+
 # Folders to ignore
 node_modules

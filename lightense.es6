@@ -13,6 +13,7 @@ const Lightense = () => {
     keyboard: true,
     cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
     background: 'var(--bg-color-80, rgba(255, 255, 255, .98))',
+    backgroundFilter: 'blur(30px)',
     zIndex: 1000000,
     /* eslint-disable no-undefined */
     beforeShow: undefined,
@@ -72,7 +73,7 @@ const Lightense = () => {
       element.classList.add('lightense-target');
       element.addEventListener(
         'click',
-        function(event) {
+        function (event) {
           if (config.keyboard) {
             // If Command (macOS) or Ctrl (Windows) key pressed, stop processing
             // and open the image in a new tab
@@ -115,6 +116,7 @@ const Lightense = () => {
 :root {
   --lightense-z-index: ${config.zIndex - 1};
   --lightense-backdrop: ${config.background};
+  --lightense-backdrop-filter: ${config.backgroundFilter};
   --lightense-duration: ${config.time}ms;
   --lightense-timing-func: ${config.cubicBezier};
 }
@@ -137,17 +139,15 @@ const Lightense = () => {
   visibility: hidden;
 }
 
-@supports (-webkit-backdrop-filter: blur(30px)) {
+@supports (-webkit-backdrop-filter: var(--lightense-backdrop-filter)) {
   .lightense-backdrop {
-    background-color: var(--lightense-backdrop);
-    -webkit-backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: var(--lightense-backdrop-filter);
   }
 }
 
-@supports (backdrop-filter: blur(30px)) {
+@supports (backdrop-filter: var(--lightense-backdrop-filter)) {
   .lightense-backdrop {
-    background-color: var(--lightense-backdrop);
-    backdrop-filter: blur(30px);
+    backdrop-filter: var(--lightense-backdrop-filter);
   }
 }
 
@@ -240,14 +240,14 @@ const Lightense = () => {
     config.wrap.className = 'lightense-wrap';
 
     // Apply zoom ratio to target image
-    setTimeout(function() {
+    setTimeout(function () {
       config.target.style.transform = 'scale(' + config.scaleFactor + ')';
     }, 20);
 
     // Apply animation to outer wrapper
     config.target.parentNode.insertBefore(config.wrap, config.target);
     config.wrap.appendChild(config.target);
-    setTimeout(function() {
+    setTimeout(function () {
       config.wrap.style.transform =
         'translate3d(' +
         config.translateX +
@@ -282,7 +282,7 @@ const Lightense = () => {
     insertCss('lightense-images-css-computed', css);
 
     config.container.style.visibility = 'visible';
-    setTimeout(function() {
+    setTimeout(function () {
       config.container.style.opacity = '1';
     }, 20);
   }
@@ -302,7 +302,7 @@ const Lightense = () => {
     config.container.style.opacity = '';
 
     // Hide backdrop and remove target element wrapper
-    setTimeout(function() {
+    setTimeout(function () {
       invokeCustomHook('afterHide');
       config.container.style.visibility = '';
       config.container.style.backgroundColor = '';
@@ -340,12 +340,12 @@ const Lightense = () => {
     // Save current window scroll position for later use
     config.scrollY = w.scrollY;
 
-    once(config.target, 'transitionend', function() {
+    once(config.target, 'transitionend', function () {
       invokeCustomHook('afterShow');
     });
 
     var img = new Image();
-    img.onload = function() {
+    img.onload = function () {
       createTransform(this);
       createViewer();
       bindEvents();
