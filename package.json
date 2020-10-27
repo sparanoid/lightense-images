@@ -34,7 +34,7 @@
     "eslint-loader": "^4.0.2",
     "husky": "^4.2.5",
     "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^4.43.0",
+    "webpack": "^5.0.0",
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
