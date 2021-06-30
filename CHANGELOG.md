@@ -1,3 +1,5 @@
+Deprecated. See GitHub releases for latest updates.
+
 ## [1.0.10](https://github.com/sparanoid/lightense-images/compare/v1.0.9...v1.0.10) (2020-07-16)
 
 
@@ -132,6 +134,3 @@
 ### Features
 
 * init release ([1ade8c2](https://github.com/sparanoid/lightense-images/commit/1ade8c2f4c0afc745d37ec388234fab6397223b0))
-
-
-
