@@ -2,7 +2,7 @@
   "name": "lightense-images",
   "version": "1.0.10",
   "description": "A dependency-free pure JavaScript image zooming library less than 2 KB (gzipped)",
-  "main": "lightense.js",
+  "main": "dist/lightense.js",
   "scripts": {
     "build": "webpack --progress --mode production",
     "test": "yarn build",
