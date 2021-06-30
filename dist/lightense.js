@@ -8,7 +8,7 @@
 		exports["Lightense"] = factory();
 	else
 		root["Lightense"] = factory();
-})(self, function() {
+})(this, function() {
 return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 

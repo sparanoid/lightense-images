@@ -14,7 +14,8 @@ module.exports = {
     path: path.resolve(__dirname, './'),
     filename: '[name].js',
     libraryTarget: 'umd',
-    library: 'Lightense'
+    library: 'Lightense',
+    globalObject: 'this',
   },
   module: {
     rules: [
