@@ -175,10 +175,12 @@ const Lightense = () => {
   }
 
   function createBackdrop() {
-    if (!d.querySelector('.lightense-backdrop')) {
+    if (d.querySelector('.lightense-backdrop') === null) {
       config.container = d.createElement('div');
       config.container.className = 'lightense-backdrop';
       d.body.appendChild(config.container);
+    } else {
+      config.container = d.querySelector('.lightense-backdrop');
     }
   }
 

@@ -7,8 +7,8 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   entry: {
-    'lightense': './lightense.es6',
-    'lightense.min': './lightense.es6',
+    './dist/lightense': './src/index.js',
+    './dist/lightense.min': './src/index.js',
   },
   output: {
     path: path.resolve(__dirname, './'),
@@ -19,7 +19,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.es6$/,
+        test: /\.js$/,
         exclude: /node_modules/,
         enforce: 'pre',
         use: {
@@ -48,7 +48,7 @@ module.exports = {
       entryOnly: true
     }),
     new ESLintPlugin({
-      extensions: 'es'
+      extensions: 'js'
     })
   ]
 };

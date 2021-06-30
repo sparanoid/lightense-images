@@ -1,6 +1,6 @@
 {
   "hooks": {
-    "pre-commit": "yarn test && git add lightense.js lightense.min.js",
+    "pre-commit": "yarn test && git add .",
     "pre-push": "yarn build"
   }
 }
