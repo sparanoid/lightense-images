@@ -2,7 +2,8 @@ const webpack = require('webpack');
 const path = require('path');
 const pkg = require('./package.json');
 const banner = `/*! ${ pkg.name } v${ pkg.version } | © ${ pkg.author } | ${ pkg.license } */`;
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -21,23 +22,22 @@ module.exports = {
         test: /\.es6$/,
         exclude: /node_modules/,
         enforce: 'pre',
-        loader: [
-          'babel-loader',
-          'eslint-loader'
-        ],
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          },
+        },
       }
     ]
   },
   optimization: {
+    minimize: true,
     minimizer: [
-      new UglifyJsPlugin({
+      new TerserPlugin({
         include: /\.min\.js$/,
-        cache: true,
         parallel: true,
-        uglifyOptions: {
-          mangle: true
-        },
-        sourceMap: true
+        extractComments: false,
       })
     ]
   },
@@ -46,6 +46,9 @@ module.exports = {
       banner: banner,
       raw: true,
       entryOnly: true
+    }),
+    new ESLintPlugin({
+      extensions: 'es'
     })
   ]
 };
