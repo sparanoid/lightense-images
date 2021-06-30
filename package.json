@@ -4,11 +4,10 @@
   "description": "A dependency-free pure JavaScript image zooming library less than 2 KB (gzipped)",
   "main": "dist/lightense.js",
   "scripts": {
-    "build": "webpack --progress --mode production",
+    "build": "webpack --progress --mode=production",
     "test": "yarn build",
-    "watch": "webpack --progress --watch --mode development",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
-    "release": "yarn test && yarn version && git push origin master && git push --tags && npm publish"
+    "watch": "webpack --progress --watch --mode=development",
+    "release": "release-it"
   },
   "repository": {
     "type": "git",
@@ -34,9 +33,14 @@
     "eslint": "^7.4.0",
     "eslint-webpack-plugin": "^2.5.4",
     "husky": "^4.2.5",
+    "release-it": "^14.10.0",
     "terser-webpack-plugin": "^5.1.4",
     "webpack": "^5.41.1",
     "webpack-cli": "^4.7.2"
   },
-  "dependencies": {}
+  "release-it": {
+    "github": {
+      "release": true
+    }
+  }
 }
