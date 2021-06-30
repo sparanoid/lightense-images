@@ -1,10 +1,6 @@
 const Lightense = () => {
   'use strict';
 
-  // Save some bytes
-  const w = window;
-  const d = document;
-
   // default options
   const defaults = {
     time: 300,
@@ -47,7 +43,7 @@ const Lightense = () => {
         throw 'You need to pass an element!';
 
       case 'string':
-        return d.querySelectorAll(elements);
+        return document.querySelectorAll(elements);
 
       case 'object':
         return elements;
@@ -77,7 +73,7 @@ const Lightense = () => {
             // If Command (macOS) or Ctrl (Windows) key pressed, stop processing
             // and open the image in a new tab
             if (event.metaKey || event.ctrlKey) {
-              return w.open(element.src, '_blank');
+              return window.open(element.src, '_blank');
             }
           }
 
@@ -90,22 +86,22 @@ const Lightense = () => {
   }
 
   function insertCss(styleId, styleContent) {
-    var head = d.head || d.getElementsByTagName('head')[0];
+    var head = document.head || document.getElementsByTagName('head')[0];
 
     // Remove existing instance
-    if (d.getElementById(styleId)) {
-      d.getElementById(styleId).remove();
+    if (document.getElementById(styleId)) {
+      document.getElementById(styleId).remove();
     }
 
     // Create new instance
-    var styleEl = d.createElement('style');
+    var styleEl = document.createElement('style');
     styleEl.id = styleId;
 
     // Check if content exists
     if (styleEl.styleSheet) {
       styleEl.styleSheet.cssText = styleContent;
     } else {
-      styleEl.appendChild(d.createTextNode(styleContent));
+      styleEl.appendChild(document.createTextNode(styleContent));
     }
     head.appendChild(styleEl);
   }
@@ -175,12 +171,12 @@ const Lightense = () => {
   }
 
   function createBackdrop() {
-    if (d.querySelector('.lightense-backdrop') === null) {
-      config.container = d.createElement('div');
+    if (document.querySelector('.lightense-backdrop') === null) {
+      config.container = document.createElement('div');
       config.container.className = 'lightense-backdrop';
-      d.body.appendChild(config.container);
+      document.body.appendChild(config.container);
     } else {
-      config.container = d.querySelector('.lightense-backdrop');
+      config.container = document.querySelector('.lightense-backdrop');
     }
   }
 
@@ -190,12 +186,12 @@ const Lightense = () => {
     var naturalHeight = img.height;
 
     // Calc zoom ratio
-    var scrollTop = w.pageYOffset || d.documentElement.scrollTop || 0;
-    var scrollLeft = w.pageXOffset || d.documentElement.scrollLeft || 0;
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+    var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || 0;
     var targetImage = config.target.getBoundingClientRect();
     var maxScaleFactor = naturalWidth / targetImage.width;
-    var viewportWidth = w.innerWidth || d.documentElement.clientWidth || 0;
-    var viewportHeight = w.innerHeight || d.documentElement.clientHeight || 0;
+    var viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+    var viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
     var viewportPadding =
       config.target.getAttribute('data-lightense-padding') ||
       config.target.getAttribute('data-padding') ||
@@ -238,7 +234,7 @@ const Lightense = () => {
     config.target.classList.add('lightense-open');
 
     // Create wrapper element
-    config.wrap = d.createElement('div');
+    config.wrap = document.createElement('div');
     config.wrap.className = 'lightense-wrap';
 
     // Apply zoom ratio to target image
@@ -314,7 +310,7 @@ const Lightense = () => {
   }
 
   function checkViewer() {
-    var scrollOffset = Math.abs(config.scrollY - w.scrollY);
+    var scrollOffset = Math.abs(config.scrollY - window.scrollY);
     if (scrollOffset >= config.offset) {
       removeViewer();
     }
@@ -340,7 +336,7 @@ const Lightense = () => {
     invokeCustomHook('beforeShow');
 
     // Save current window scroll position for later use
-    config.scrollY = w.scrollY;
+    config.scrollY = window.scrollY;
 
     once(config.target, 'transitionend', function() {
       invokeCustomHook('afterShow');
@@ -357,14 +353,14 @@ const Lightense = () => {
   }
 
   function bindEvents() {
-    w.addEventListener('keyup', onKeyUp, false);
-    w.addEventListener('scroll', checkViewer, false);
+    window.addEventListener('keyup', onKeyUp, false);
+    window.addEventListener('scroll', checkViewer, false);
     config.container.addEventListener('click', removeViewer, false);
   }
 
   function unbindEvents() {
-    w.removeEventListener('keyup', onKeyUp, false);
-    w.removeEventListener('scroll', checkViewer, false);
+    window.removeEventListener('keyup', onKeyUp, false);
+    window.removeEventListener('scroll', checkViewer, false);
     config.container.removeEventListener('click', removeViewer, false);
   }
 
