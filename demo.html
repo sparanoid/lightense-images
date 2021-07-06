@@ -41,6 +41,17 @@
     margin-top: 2em;
   }
 
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .gallery > div {
+    flex-grow: 1;
+    margin: 0 .25rem .5rem;
+    width: 30%;
+  }
+
   /* Example: Lazy Lightense */
   .lightense-lazy {
     filter: blur(16px);
@@ -95,7 +106,7 @@
   />
 </p>
 
-<h2>General Usage</h2>
+<h2>Custom Background</h2>
 
 <p>
   <img
@@ -140,6 +151,14 @@
     class="lightense-lazy"
   />
 </p>
+
+<h2>Flexbox Gallery</h2>
+
+<div class="gallery">
+  <div><img src="https://d349cztnlupsuf.cloudfront.net/girls_dead_monster_logo.png" /></div>
+  <div><img src="https://d349cztnlupsuf.cloudfront.net/girls_dead_monster_logo.png" /></div>
+  <div><img src="https://d349cztnlupsuf.cloudfront.net/girls_dead_monster_logo.png" /></div>
+</div>
 
 <h2>Event Hooks</h2>
 
