@@ -1,6 +1,6 @@
 {
   "name": "lightense-images",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "A dependency-free pure JavaScript image zooming library less than 2 KB (gzipped)",
   "main": "dist/lightense.js",
   "scripts": {
