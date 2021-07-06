@@ -5,7 +5,7 @@
   "main": "dist/lightense.js",
   "scripts": {
     "build": "webpack --progress --mode=production",
-    "test": "yarn build",
+    "test": "yarn eslint src/index.js",
     "watch": "webpack --progress --watch --mode=development",
     "release": "release-it"
   },
