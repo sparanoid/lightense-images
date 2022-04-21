@@ -9,6 +9,7 @@ const Lightense = () => {
     keyboard: true,
     cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
     background: 'var(--bg-color-80, rgba(255, 255, 255, .98))',
+    backgroundFilter: 'blur(30px)',
     zIndex: 1000000,
     /* eslint-disable no-undefined */
     beforeShow: undefined,
@@ -111,6 +112,7 @@ const Lightense = () => {
 :root {
   --lightense-z-index: ${config.zIndex - 1};
   --lightense-backdrop: ${config.background};
+  --lightense-backdrop-filter: ${config.backgroundFilter};
   --lightense-duration: ${config.time}ms;
   --lightense-timing-func: ${config.cubicBezier};
 }
@@ -136,14 +138,14 @@ const Lightense = () => {
 @supports (-webkit-backdrop-filter: blur(30px)) {
   .lightense-backdrop {
     background-color: var(--lightense-backdrop);
-    -webkit-backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: var(--lightense-backdrop-filter);
   }
 }
 
 @supports (backdrop-filter: blur(30px)) {
   .lightense-backdrop {
     background-color: var(--lightense-backdrop);
-    backdrop-filter: blur(30px);
+    backdrop-filter: var(--lightense-backdrop-filter);
   }
 }
 
