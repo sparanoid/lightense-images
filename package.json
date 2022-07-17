@@ -35,7 +35,7 @@
     "core-js": "^3.15.2",
     "eslint": "^8.0.0",
     "eslint-webpack-plugin": "^2.5.4",
-    "husky": "^4.2.5",
+    "husky": "^8.0.0",
     "release-it": "^14.10.0",
     "terser-webpack-plugin": "^5.1.4",
     "webpack": "^5.41.1",
